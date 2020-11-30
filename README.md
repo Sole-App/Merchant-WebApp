@@ -1,115 +1,160 @@
-Introduction
-============
+[![@coreui coreui](https://img.shields.io/badge/@coreui%20-coreui-lightgrey.svg?style=flat-square)](https://github.com/coreui/coreui)
+[![npm package][npm-coreui-badge]][npm-coreui]
+[![NPM downloads][npm-coreui-download]][npm-coreui]  
+[![@coreui react](https://img.shields.io/badge/@coreui%20-react-lightgrey.svg?style=flat-square)](https://github.com/coreui/react)
+[![npm package][npm-coreui-react-badge]][npm-coreui-react]
+[![NPM downloads][npm-coreui-react-download]][npm-coreui-react]  
+[![npm next][npm-next]][npm]
 
-[![Build Status](https://img.shields.io/travis/ColorlibHQ/AdminLTE/master.svg)](https://travis-ci.org/ColorlibHQ/AdminLTE)
-[![npm version](https://img.shields.io/npm/v/admin-lte/latest.svg)](https://www.npmjs.com/package/admin-lte)
-[![Packagist](https://img.shields.io/packagist/v/almasaeed2010/adminlte.svg)](https://packagist.org/packages/almasaeed2010/adminlte)
-[![CDNJS](https://img.shields.io/cdnjs/v/admin-lte.svg)](https://cdnjs.com/libraries/admin-lte)
+[npm-coreui]: https://www.npmjs.com/package/@coreui/coreui
+[npm-coreui-badge]: https://img.shields.io/npm/v/@coreui/coreui.png?style=flat-square
+[npm-coreui-download]: https://img.shields.io/npm/dm/@coreui/coreui.svg?style=flat-square
+[npm-coreui-react]: https://www.npmjs.com/package/@coreui/react
+[npm-coreui-react-badge]: https://img.shields.io/npm/v/@coreui/react.png?style=flat-square
+[npm-coreui-react-download]: https://img.shields.io/npm/dm/@coreui/react.svg?style=flat-square
+[npm-next]: https://img.shields.io/npm/v/@coreui/react/next.png?style=flat-square
+[npm]: https://www.npmjs.com/package/@coreui/react
 
-**AdminLTE** is a fully responsive administration template. Based on **[Bootstrap 4](https://getbootstrap.com)** framework.
-Highly customizable and easy to use. Fits many screen resolutions from small mobile devices to large desktops.
+# CoreUI Pro v3 React Admin Template
 
-**Preview on [AdminLTE.io](https://adminlte.io/themes/v3)**
+CoreUI is meant to be the UX game changer. Pure & transparent code is devoid of redundant components, so the app is light enough to offer ultimate user experience. This means mobile devices also, where the navigation is just as easy and intuitive as on a desktop or laptop. The CoreUI Layout API lets you customize your project for almost any device – be it Mobile, Web or WebApp – CoreUI covers them all!
 
-Looking for Premium Templates?
-------------------------------
-AdminLTE.io just opened a new premium templates page. Hand picked to ensure the best quality and the most affordable
-prices. Visit https://adminlte.io/premium for more information.
+## Table of Contents
 
-!["AdminLTE Presentation"](https://adminlte.io/AdminLTE3.png "AdminLTE Presentation")
+* [Versions](#versions)
+* [CoreUI Pro](#coreui-pro)
+* [Installation](#installation)
+* [Basic usage](#create-react-app)
+* [What's included](#whats-included)
+* [Documentation](#documentation)
+* [Versioning](#versioning)
+* [Creators](#creators)
+* [Community](#community)
+* [Copyright and License](#copyright-and-license)
 
-**AdminLTE** has been carefully coded with clear comments in all of its JS, SCSS and HTML files.
-SCSS has been used to increase code customizability.
+## Versions
 
-Installation
-------------
-There are multiple ways to install AdminLTE.
+**Only customers with [Membership Plan](https://coreui.io/pro/#buy) have access to private github repositories.**
 
-#### Download:
+* [CoreUI Pro Bootstrap Admin Template](https://github.com/coreui/coreui-pro-bootstrap-admin-template)
+* [CoreUI Pro Angular 2+ Admin Template](https://github.com/coreui/coreui-pro-angular-admin-template)
+* [CoreUI Pro React.js Admin Template](https://github.com/coreui/coreui-pro-react-admin-template)
+* [CoreUI Pro Vue.js Admin Template](https://github.com/coreui/coreui-pro-vue-admin-template)
 
-Download from [Github releases](https://github.com/ColorlibHQ/AdminLTE/releases).
 
-#### Using The Command Line:
+## CoreUI Pro
 
-__Via NPM__
+* 💪  [CoreUI v3 Pro Bootstrap Admin Template](https://coreui.io/pro/)
+* 💪  [CoreUI v2 Pro Angular Admin Template](https://coreui.io/pro/angular)
+* 💪  [CoreUI v3 Pro React Admin Template](https://coreui.io/pro/react)
+* 💪  [CoreUI v3 Pro Vue Admin Template](https://coreui.io/pro/vue)
+
+## Installation
+
+### Clone repo
+
+**Only customers with [Membership Plan](https://coreui.io/pro/#buy) have access to private github repository.**
+
+``` bash
+# clone the repo
+$ git clone https://github.com/coreui/coreui-pro-react-admin-template.git my-project
+
+# go into app's directory
+$ cd my-project
+
+# install app's dependencies
+$ npm install
+```
+
+### Copy and Paste
+
+Copy all your files to your project folder and then,
+
+``` bash
+# go into app's directory
+$ cd my-project
+
+# install app's dependencies
+$ npm install
+```
+
+## Create React App
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app)
+
+see also:
+[CRA docs](https://create-react-app.dev/docs/getting-started)
+
+### Basic usage
+
+``` bash
+# dev server  with hot reload at http://localhost:3000
+$ npm start
+```
+
+Navigate to [http://localhost:3000](http://localhost:3000). The app will automatically reload if you change any of the source files.
+
+### Build
+
+Run `build` to build the project. The build artifacts will be stored in the `build/` directory.
+
 ```bash
-npm install admin-lte@^3.0 --save
+# build for production with minification
+$ npm run build
 ```
 
-__Via Yarn__
-```bash
-yarn add admin-lte@^3.0
+## What's included
+
+Within the download you'll find the following directories and files, logically grouping common assets and providing both compiled and minified variations. You'll see something like this:
+
+```
+CoreUI-React#v3.0.0
+├── public/          #static files
+│   └── index.html   #html template
+│
+├── src/             #project root
+│   ├── assets/      #assets - js icons object
+│   ├── containers/  #container source - template layout
+|   │   ├── _nav.js  #sidebar config
+|   │   └── ...      
+│   ├── scss/        #user scss/css source
+│   ├── views/       #views source
+│   ├── App.js
+│   ├── App.test.js
+│   ├── polyfill.js
+│   ├── index.js
+│   ├── routes.js    #routes config
+│   └── store.js     #template state example 
+│
+└── package.json
 ```
 
-__Via Composer__
-```bash
-composer require "almasaeed2010/adminlte=~3.0"
-```
+## Documentation
 
-__Via Git__
-- Clone to your machine
-```
-git clone https://github.com/ColorlibHQ/AdminLTE.git
-```
+The documentation for the CoreUI Admin Template is hosted at our website [CoreUI for React](https://coreui.io/react/)
 
-Documentation
--------------
-Visit the [online documentation](https://adminlte.io/docs/3.0/) for the most
-updated guide. Information will be added on a weekly basis.
 
-Browser Support
----------------
-- IE 10+
-- Firefox (latest)
-- Chrome (latest)
-- Safari (latest)
-- Opera (latest)
+## Versioning
 
-Contribution
-------------
-Contribution are always **welcome and recommended**! Here is how:
+For transparency into our release cycle and in striving to maintain backward compatibility, CoreUI Pro Admin Template is maintained under [the Semantic Versioning guidelines](http://semver.org/).
 
-- Fork the repository ([here is the guide](https://help.github.com/articles/fork-a-repo/)).
-- Clone to your machine ```git clone https://github.com/YOUR_USERNAME/AdminLTE.git```
-- Create a new branch
-- Make your changes
-- Create a pull request
+See [the Releases section of our project](https://github.com/coreui/coreui-pro-react-admin-template/releases) for changelogs for each release version.
 
-#### Compile dist files
-To compile the dist files you need nodejs/npm, clone/download the repo then:
+## Creators
 
-1. `npm install` (install npm deps)
-2. _Optional:_ `npm run dev` (developer mode, autocompile with browsersync support for live demo)
-3. `npm run production` (compile css/js files)
+***Łukasz Holeczek***
+* <https://twitter.com/lukaszholeczek>
+* <https://github.com/coreui>
 
-#### Contribution Requirements:
-- When you contribute, you agree to give a non-exclusive license to AdminLTE.io to use that contribution in any context as we (AdminLTE.io) see appropriate.
-- If you use content provided by another party, it must be appropriately licensed using an [open source](http://opensource.org/licenses) license.
-- Contributions are only accepted through Github pull requests.
-- Finally, contributed code must work in all supported browsers (see above for browser support).
+**CoreUI Team**
+* <https://github.com/orgs/coreui/people>
 
-License
--------
-AdminLTE is an open source project by [AdminLTE.io](https://adminlte.io) that is licensed under [MIT](http://opensource.org/licenses/MIT). AdminLTE.io
-reserves the right to change the license of future releases.
+## Community
 
-Legacy Releases
----------------
-- [AdminLTE 2](https://github.com/ColorlibHQ/AdminLTE/releases/tag/v2.4.18)
-- [AdminLTE 1](https://github.com/ColorlibHQ/AdminLTE/releases/tag/1.3.1)
+Get updates on CoreUI's development and chat with the project maintainers and community members.
 
-Change log
-----------
-Visit the [releases](https://github.com/ColorlibHQ/AdminLTE/releases) page to view the changelog
+- Follow [@core_ui on Twitter](https://twitter.com/core_ui).
+- Read and subscribe to [CoreUI Blog](https://coreui.ui/blog/).
 
-Image Credits
--------------
-[Pixeden](http://www.pixeden.com/psd-web-elements/flat-responsive-showcase-psd)
 
-[Graphicsfuel](http://www.graphicsfuel.com/2013/02/13-high-resolution-blur-backgrounds/)
-
-[Pickaface](http://pickaface.net/)
-
-[Unsplash](https://unsplash.com/)
-
-[Uifaces](http://uifaces.com/)
+## Copyright and License
+copyright 2020 creativeLabs Łukasz Holeczek 
