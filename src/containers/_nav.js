@@ -14,6 +14,22 @@ export default [
   },
   {
     _tag: 'CSidebarNavTitle',
+    _children: ['Management']
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Product',
+    to: '/management/product',
+    icon: 'cil-pencil',
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Menu',
+    to: '/management/menus',
+    icon: 'cil-spreadsheet',
+  },
+  {
+    _tag: 'CSidebarNavTitle',
     _children: ['Theme']
   },
   {
