@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Products = React.lazy(() => import('./views/products/Products'));
+//const Products = React.lazy(() => import('./views/products/ProductsListing'));
 
 const CodeEditors = React.lazy(() => import('./views/editors/code-editors/CodeEditors'));
 const TextEditors = React.lazy(() => import('./views/editors/text-editors/TextEditors'));
@@ -54,16 +54,21 @@ const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
 
 /* SOLE  */
-const Product = React.lazy(() => import('./views/management/product/Product'));
+const ProductsListing = React.lazy(() => import('./views/products/ProductsListing'));
+const ProductCreate = React.lazy(() => import('./views/products/ProductCreate'));
+const ProductEdit = React.lazy(() => import('./views/products/ProductEdit'));
+
 const Menus = React.lazy(() => import('./views/management/menus/Menus'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
 
-  { path: '/management', name: 'Management', component: Product, exact: true },
-  { path: '/management/product', name: 'Product', component: Product },
-  { path: '/management/menus', name: 'Menus', component: Menus },  
+  { path: '/products', name: 'Products', component: ProductsListing },
+  { path: '/product', name: 'Crate Product', component: ProductCreate },
+  { path: '/product/:id?', name: 'Edit Product', component: ProductEdit },
+
+  { path: '/menus', name: 'Menus', component: Menus },  
 
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },

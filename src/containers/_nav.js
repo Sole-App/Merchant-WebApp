@@ -18,15 +18,15 @@ export default [
   },
   {
     _tag: 'CSidebarNavItem',
-    name: 'Product',
-    to: '/management/product',
-    icon: 'cil-pencil',
+    name: 'Products',
+    to: '/products',
+    icon: 'cil-drop',
   },
   {
     _tag: 'CSidebarNavItem',
     name: 'Menu',
-    to: '/management/menus',
-    icon: 'cil-spreadsheet',
+    to: '/menus',
+    icon: 'cil-drop',
   },
   {
     _tag: 'CSidebarNavTitle',

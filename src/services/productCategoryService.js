@@ -1,10 +1,20 @@
 import { HTTPService } from "./common";
 
-const apiEndpoint = process.env.REACT_APP_MERCHANT_API_URL + "/products";
+const apiEndpoint = process.env.REACT_APP_MERCHANT_API_URL + "/ProductCategories";
 
 async function List() {
   //HTTPService.addBearerAuthorization();
   return await HTTPService.get(apiEndpoint);
+}
+
+async function ListParent() {
+  //HTTPService.addBearerAuthorization();
+  return await HTTPService.get(apiEndpoint + "/parent");
+}
+
+async function GetsByParentId(id) {
+  //HTTPService.addBearerAuthorization();
+  return await HTTPService.get(apiEndpoint + "/parent/" + encodeURIComponent(id));
 }
 
 async function Get(id) {
@@ -29,8 +39,10 @@ async function Delete(id) {
 
 export default {
   List,
+  ListParent,
   Get,
+  GetsByParentId,
   Create,
   Edit,
-  Delete,  
+  Delete,
 };
