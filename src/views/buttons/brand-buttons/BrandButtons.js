@@ -21,7 +21,7 @@ const BrandButtons = () => {
             <h6>Size Small
               <small> Add this class <code>.btn-sm</code></small>
             </h6>
-            <p>
+            <p>hbkghkgkgh
               <CButton size="sm" className="btn-facebook btn-brand mr-1 mb-1"><CIcon name="cib-facebook" /><span>Facebook</span></CButton>
               <CButton size="sm" className="btn-twitter btn-brand mr-1 mb-1"><CIcon name="cib-twitter" /><span>Twitter</span></CButton>
               <CButton size="sm" className="btn-linkedin btn-brand mr-1 mb-1"><CIcon name="cib-linkedin" /><span>LinkedIn</span></CButton>
