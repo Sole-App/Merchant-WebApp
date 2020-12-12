@@ -1,5 +1,7 @@
 import React from 'react';
 
+const Products = React.lazy(() => import('./views/products/Products'));
+
 const CodeEditors = React.lazy(() => import('./views/editors/code-editors/CodeEditors'));
 const TextEditors = React.lazy(() => import('./views/editors/text-editors/TextEditors'));
 
@@ -54,6 +56,12 @@ const User = React.lazy(() => import('./views/users/User'));
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+
+  { path: '/products', name: 'Products', component: Products, exact: true },
+
+
+  { path: '/products', exact: true, name: 'Products' },
+
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },
