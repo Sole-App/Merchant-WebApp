@@ -54,9 +54,13 @@ const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
 
 /* SOLE  */
-const ProductsListing = React.lazy(() => import('./views/products/ProductsListing'));
-const ProductCreate = React.lazy(() => import('./views/products/ProductCreate'));
-const ProductEdit = React.lazy(() => import('./views/products/ProductEdit'));
+const ProductsListing = React.lazy(() => import('./views/product/ProductsListing'));
+const ProductCreate = React.lazy(() => import('./views/product/ProductCreate'));
+const ProductEdit = React.lazy(() => import('./views/product/ProductEdit'));
+
+const ProductCategoriesListing = React.lazy(() => import('./views/productCategory/ProductCategoriesListing'));
+const ProductCategoryCreate = React.lazy(() => import('./views/productCategory/ProductCategoryCreate'));
+const ProductCategoryEdit = React.lazy(() => import('./views/productCategory/ProductCategoryEdit'));
 
 const Menus = React.lazy(() => import('./views/management/menus/Menus'));
 
@@ -65,10 +69,14 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
 
   { path: '/products', name: 'Products', component: ProductsListing },
-  { path: '/product', name: 'Crate Product', component: ProductCreate },
-  { path: '/product/:id?', name: 'Edit Product', component: ProductEdit },
+  { path: '/product/create', name: 'Crate Product', component: ProductCreate },
+  { path: '/product/edit/:id?', name: 'Edit Product', component: ProductEdit },
 
-  { path: '/menus', name: 'Menus', component: Menus },  
+  { path: '/productcategories', name: 'Product Categories', component: ProductCategoriesListing },
+  { path: '/productcategory/create', name: 'Product Category', component: ProductCategoryCreate },
+  { path: '/productcategory/edit/:id?', name: 'Product Category', component: ProductCategoryEdit },
+
+  { path: '/menus', name: 'Menus', component: Menus },
 
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
@@ -122,7 +130,7 @@ const routes = [
   { path: '/apps', name: 'Apps', component: Invoice, exact: true },
   { path: '/apps/invoicing', name: 'Invoice', component: Invoice, exact: true },
   { path: '/apps/invoicing/invoice', name: 'Invoice', component: Invoice },
-  { path: '/users', exact: true,  name: 'Users', component: Users },
+  { path: '/users', exact: true, name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
   { path: '/apps/email/inbox', exact: true, name: 'Inbox' },
   { path: '/apps/email/compose', exact: true, name: 'Compose' },

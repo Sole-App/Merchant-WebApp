@@ -24,6 +24,12 @@ export default [
   },
   {
     _tag: 'CSidebarNavItem',
+    name: 'Product Category',
+    to: '/productcategories',
+    icon: 'cil-drop',
+  },
+  {
+    _tag: 'CSidebarNavItem',
     name: 'Menu',
     to: '/menus',
     icon: 'cil-drop',

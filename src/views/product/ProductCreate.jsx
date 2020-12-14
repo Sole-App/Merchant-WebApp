@@ -11,7 +11,7 @@ import {
 
 import { ProductService } from "../../services";
 
-import CreateProductForm from "../../components/products/CreateForm/CreateProductForm";
+import CreateProductForm from "../../components/product/CreateProductForm";
 
 const ProductCreate = () => {
   const handleSubmit = async (inputs) => {

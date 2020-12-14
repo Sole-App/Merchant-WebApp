@@ -9,44 +9,35 @@ import {
   CButton,
 } from "@coreui/react";
 
-import useCreateProductForm from "./useCreateProductForm";
-import { ProductCategoryService } from "../../../services";
+import { ProductCategoryService } from "../../services";
+import useSubmitForm from "../../hooks/useSubmitForm";
 
 import "./style.css";
 
-function CreateProductForm({ OnSubmit }) {
-  const [categories, setCategories] = useState([]);
-  const [subcategories, setSubCategories] = useState([]);
+function ProductCategoryForm({ OnSubmit }) {
+  const [categories, setCategories] = useState([]);  
   const [inputsUpdated, setInputsUpdated] = useState(false);
 
   useEffect(() => {
     ProductCategoryService.ListParent().then((response) => {
       if (response.data) {
-        setCategories([{ id: "", name: "-- Select --" }, ...response.data]);
-
-        if (response.data) {
-          // const options = response.data.map((c) => ({
-          //   value: c.id,
-          //   label: c.name,
-          // }));
-          // setCategoryOptions(options);
-        }
+        setCategories([{ id: "", name: "-- Select --" }, ...response.data]);      
       }
     });
   }, [true]);
 
   useEffect(() => {
     if (inputs.category) {
-      ProductCategoryService.GetsByParentId(inputs.category).then(
+      ProductCategoryService.ListParent().then(
         (response) => {
           console.log(response.data);
           if (response.data) {
-            setSubCategories([
+            setCategories([
               { id: "", name: "-- Select --" },
               ...response.data,
             ]);
           } else {
-            setSubCategories([]);
+            setCategories([]);
           }
         }
       );
@@ -61,7 +52,7 @@ function CreateProductForm({ OnSubmit }) {
     OnSubmit(inputs);
   };
 
-  const { inputs, handleInputChange, handleSubmit } = useCreateProductForm(
+  const { inputs, handleInputChange, handleSubmit } = useSubmitForm(
     { name: "", price: "" },
     inputsUpdatedCallback,
     submit
@@ -84,7 +75,7 @@ function CreateProductForm({ OnSubmit }) {
         </CCol>
       </CRow>
       <CRow>
-        <CCol xs={12} sm={12} md={6} lg={6} xl={6} xxl={6}>
+        <CCol xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
           <CFormGroup>
             <CSelect
               custom
@@ -92,6 +83,7 @@ function CreateProductForm({ OnSubmit }) {
               id="category"
               value={inputs.category}
               onChange={handleInputChange}
+              disabled={categories.length <= 0}
             >
               {categories.map((value, index) => {
                 return (
@@ -102,41 +94,9 @@ function CreateProductForm({ OnSubmit }) {
               })}
             </CSelect>
           </CFormGroup>
-        </CCol>
-        <CCol xs={12} sm={12} md={6} lg={6} xl={6} xxl={6}>
-          <CFormGroup>
-            <CSelect
-              custom
-              name="subcategory"
-              id="subcategory"
-              value={inputs.subcategory}
-              onChange={handleInputChange}
-            >
-              {subcategories.map((value, index) => {
-                return (
-                  <option key={value.id} value={value.id}>
-                    {value.name}
-                  </option>
-                );
-              })}
-            </CSelect>
-          </CFormGroup>
-        </CCol>
+        </CCol>        
       </CRow>
-
-      <CRow>
-        <CCol xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-          <CFormGroup>
-            <CInput
-              id="price"
-              name="price"
-              value={inputs.price}
-              onChange={handleInputChange}
-              placeholder="Price"
-            />
-          </CFormGroup>
-        </CCol>
-      </CRow>
+     
       <CRow>
         <CCol xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
           <CButton block color="primary" onClick={handleSubmit}>
@@ -153,4 +113,4 @@ function CreateProductForm({ OnSubmit }) {
   );
 }
 
-export default CreateProductForm;
+export default ProductCategoryForm;
