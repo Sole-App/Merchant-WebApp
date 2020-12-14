@@ -33,8 +33,8 @@ function CreateProductForm({ OnSubmit }) {
 
   useEffect(() => {
     ProductCategoryService.ListParent().then((response) => {
-      if (response.data) {
-        setCategories([{ id: "", name: "-- Select --" }, ...response.data]);    
+      if (response.data && response.data.length > 0) {
+        setCategories([{ id: "", name: "-- Select --" }, ...response.data]);
       }
     });
   }, [true]);
@@ -43,7 +43,7 @@ function CreateProductForm({ OnSubmit }) {
     if (inputs.category) {
       ProductCategoryService.GetsByParentId(inputs.category).then(
         (response) => {
-          if (response.data) {
+          if (response.data && response.data.length > 0) {
             setSubCategories([
               { id: "", name: "-- Select --" },
               ...response.data,
@@ -72,7 +72,6 @@ function CreateProductForm({ OnSubmit }) {
   const submit = (event) => {
     const { name, value } = event.target;
     setFormValues({ ...formValues, [name]: value });
- 
   };
 
   useEffect(() => {
@@ -179,7 +178,12 @@ function CreateProductForm({ OnSubmit }) {
         </CRow>
         <CRow>
           <CCol xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
-            <CButton block color="primary" onClick={handleSubmit} disabled={formValid}>
+            <CButton
+              block
+              color="primary"
+              onClick={handleSubmit}
+              disabled={formValid}
+            >
               Create
             </CButton>
           </CCol>
