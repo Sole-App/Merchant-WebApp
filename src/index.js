@@ -11,28 +11,14 @@ import { icons } from './assets/icons'
 import { Provider } from 'react-redux'
 import store from './store'
 
-import { Auth0Provider } from "@auth0/auth0-react";
-
 React.icons = icons
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Auth0Provider
-        domain="munizoft.au.auth0.com"
-        clientId="uEZVsDBK1byXSpuD32hmYmkdvhzxmfay"
-        redirectUri={window.location.origin}
-      >
-        <App />
-      </Auth0Provider>
+      <App />
     </Provider>
   </React.StrictMode>,
-
-  // <React.StrictMode>
-  //   <Provider store={store}>
-  //     <App />
-  //   </Provider>
-  // </React.StrictMode>,
 
   document.getElementById('root')
 );

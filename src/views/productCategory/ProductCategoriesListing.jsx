@@ -46,14 +46,21 @@ const ProductCategoriesListing = () => {
     {
       key: "name",
       label: "Name",
-      _style: { width: "50%" },
+      _style: { width: "40%" },
       sorter: true,
       filter: true,
     },
     {
       key: "parent_category",
       label: "Parent",
-      _style: { width: "30%" },
+      _style: { width: "40%" },
+      sorter: true,
+      filter: true,
+    },
+    {
+      key: "created_at",
+      label: "Created Date",
+      _style: { width: "20%" },
       sorter: true,
       filter: true,
     },
@@ -61,7 +68,7 @@ const ProductCategoriesListing = () => {
 
   return (
     <CRow>
-      <CCol xs={12} sm={12} md={6} lg={6} xl={6} xxl={6}>
+      <CCol xs={12} sm={12} md={8} lg={12} xl={12} xxl={12} className="p-0">
         <CCard>
           <CCardHeader>
             <CRow>
@@ -112,6 +119,9 @@ const ProductCategoriesListing = () => {
 
                   return <td></td>;
                 },
+                created_at: (item, index) => {
+                  return <td>{item.created_at}</td>;
+                },
               }}
               onRowClick={(item) =>
                 history.push(`/productcategory/edit/${item.id}`)
@@ -120,6 +130,8 @@ const ProductCategoriesListing = () => {
           </CCardBody>
         </CCard>
       </CCol>
+
+      <CCol md={8} style={{ border: "1px solid red" }}></CCol>
     </CRow>
   );
 };

@@ -45,6 +45,14 @@ function removeBearerAuthorization() {
   delete axios.defaults.headers.common[AuthorizationKey];
 }
 
+function addHeader(key, value) {
+  axios.defaults.headers.common[key] = value;
+}
+
+function addAccessControlAllowOrigin() {
+  axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+}
+
 export default {
   get: axios.get,
   post: axios.post,
@@ -57,4 +65,6 @@ export default {
   addBearerAuthorization,
   setBearerAuthorization,
   removeBearerAuthorization,
+  addHeader,
+  addAccessControlAllowOrigin,
 };

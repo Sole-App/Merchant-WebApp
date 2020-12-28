@@ -54,6 +54,8 @@ const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
 
 /* SOLE  */
+const AccountLogin = React.lazy(() => import('./views/account/login/Login'));
+
 const ProductsListing = React.lazy(() => import('./views/product/ProductsListing'));
 const ProductCreate = React.lazy(() => import('./views/product/ProductCreate'));
 const ProductEdit = React.lazy(() => import('./views/product/ProductEdit'));
@@ -67,6 +69,8 @@ const Menus = React.lazy(() => import('./views/management/menus/Menus'));
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+
+  { path: '/account/login', exact: true, name: 'Login', component: AccountLogin },
 
   { path: '/products', name: 'Products', component: ProductsListing },
   { path: '/product/create', name: 'Crate Product', component: ProductCreate },
