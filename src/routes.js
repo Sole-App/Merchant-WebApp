@@ -56,6 +56,10 @@ const User = React.lazy(() => import('./views/users/User'));
 /* SOLE  */
 const AccountLogin = React.lazy(() => import('./views/account/login/Login'));
 
+const LocationsListing = React.lazy(() => import('./views/location/LocationsListing'));
+const LocationCreate = React.lazy(() => import('./views/location/LocationCreate'));
+const LocationEdit = React.lazy(() => import('./views/location/LocationEdit'));
+
 const ProductsListing = React.lazy(() => import('./views/product/ProductsListing'));
 const ProductCreate = React.lazy(() => import('./views/product/ProductCreate'));
 const ProductEdit = React.lazy(() => import('./views/product/ProductEdit'));
@@ -71,6 +75,10 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
 
   { path: '/account/login', exact: true, name: 'Login', component: AccountLogin },
+
+  { path: '/locations', name: 'Locations', component: LocationsListing },
+  { path: '/location/create', name: 'Crate Location', component: LocationCreate },
+  { path: '/location/edit/:id?', name: 'Edit Location', component: LocationEdit },
 
   { path: '/products', name: 'Products', component: ProductsListing },
   { path: '/product/create', name: 'Crate Product', component: ProductCreate },

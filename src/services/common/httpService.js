@@ -4,7 +4,7 @@ import logger from "./logService";
 const tokenKey = "token";
 const AuthorizationKey = "Authorization";
 
-//axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'https://ultimatezap.com.br';
+axios.defaults.headers.common[AuthorizationKey] = "Bearer " + getJwt();
 
 axios.interceptors.response.use(null, error => {
   const expectedError =

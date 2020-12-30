@@ -1,6 +1,12 @@
+import jwtDecode from "jwt-decode";
+
 const tokenKey = "token";
 
-function getCurrentUser() {
+function saveToken(value) {
+    localStorage.setItem(tokenKey, value);
+}
+
+function getToken() {
     try {
         if (localStorage.getItem(tokenKey) !== null) {
             const jwt = localStorage.getItem(tokenKey);
@@ -14,5 +20,6 @@ function getCurrentUser() {
 }
 
 export default {
-    getCurrentUser,
+    saveToken,
+    getToken
 };

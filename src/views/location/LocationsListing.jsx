@@ -14,10 +14,10 @@ import {
 import CIcon from "@coreui/icons-react";
 import { freeSet } from '@coreui/icons'
 
-import { ProductService } from "../../services";
+import { LocationService } from "../../services";
 
-const ProductsListing = () => {
-  const [products, setProducts] = useState([]);
+const LocationsListing = () => {
+  const [locations, setLocations] = useState([]);
 
   const history = useHistory();
   // const queryPage = useLocation().search.match(/page=([0-9]+)/, '')
@@ -29,10 +29,12 @@ const ProductsListing = () => {
   // }
 
   useEffect(() => {
-    ProductService.List().then((response) => {
-      console.log(response.data);
-      setProducts(response.data);
-    });
+    LocationService.List().then((response) => {      
+      setLocations(response.data);
+    })
+    .finally(()=>{      
+    })
+    ;
   }, []);
 
   // useEffect(() => {
@@ -40,7 +42,7 @@ const ProductsListing = () => {
   // }, [currentPage, page])
 
   const redirectToCreatePage = () => {
-    history.push(`/product/create`);
+    history.push(`/location/create`);
   };
 
   return (
@@ -58,7 +60,7 @@ const ProductsListing = () => {
                 xxl={10}
                 className="font-weight-bold align-middle"
               >
-                <div className="font-weight-bold align-middle">Products</div>
+                <div className="font-weight-bold align-middle">Locations</div>
               </CCol>
               <CCol xs={2} sm={2} md={2} lg={2} xl={2} xxl={2} className="text-right pr-0">
                 <CButton color="info" onClick={redirectToCreatePage}>
@@ -69,14 +71,14 @@ const ProductsListing = () => {
           </CCardHeader>
           <CCardBody>
             <CDataTable
-              items={products}
-              fields={["name"]}
+              items={locations}
+              fields={["name", "email", "phone_number"]}
               hover
               striped
               itemsPerPage={5}
               //activePage={page}
               clickableRows
-              onRowClick={(item) => history.push(`/product/edit/${item.id}`)}
+              onRowClick={(item) => history.push(`/location/edit/${item.id}`)}
             />
 
             {/* <CPagination
@@ -93,4 +95,4 @@ const ProductsListing = () => {
   );
 };
 
-export default ProductsListing;
+export default LocationsListing;

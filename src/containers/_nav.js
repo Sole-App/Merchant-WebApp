@@ -18,6 +18,12 @@ export default [
   },
   {
     _tag: 'CSidebarNavItem',
+    name: 'Locations',
+    to: '/locations',
+    icon: 'cil-drop',
+  },
+  {
+    _tag: 'CSidebarNavItem',
     name: 'Products',
     to: '/products',
     icon: 'cil-drop',
