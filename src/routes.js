@@ -77,7 +77,7 @@ const routes = [
   { path: '/account/login', exact: true, name: 'Login', component: AccountLogin },
 
   { path: '/locations', name: 'Locations', component: LocationsListing },
-  { path: '/location/create', name: 'Crate Location', component: LocationCreate },
+  { path: '/location/create', name: 'Create Location', component: LocationCreate },
   { path: '/location/edit/:id?', name: 'Edit Location', component: LocationEdit },
 
   { path: '/products', name: 'Products', component: ProductsListing },
