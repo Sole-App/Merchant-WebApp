@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from "react-router-dom";
 import {
   CBadge,
   CDropdown,
@@ -26,7 +27,7 @@ const TheHeaderDropdown = () => {
         </div>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownItem
+        {/* <CDropdownItem
           header
           tag="div"
           color="light"
@@ -61,11 +62,11 @@ const TheHeaderDropdown = () => {
           className="text-center"
         >
           <strong>Settings</strong>
-        </CDropdownItem>
+        </CDropdownItem> */}
         <CDropdownItem>
-          <CIcon name="cil-user" className="mfe-2" />Profile
+          <CIcon name="cil-user" className="mfe-2" /><Link to="/account/profile">Profile</Link>
         </CDropdownItem>
-        <CDropdownItem>
+        {/* <CDropdownItem>
           <CIcon name="cil-settings" className="mfe-2" /> 
           Settings
         </CDropdownItem>
@@ -78,7 +79,7 @@ const TheHeaderDropdown = () => {
           <CIcon name="cil-file" className="mfe-2" /> 
           Projects
           <CBadge color="primary" className="mfs-auto">42</CBadge>
-        </CDropdownItem>
+        </CDropdownItem> */}
         <CDropdownItem divider />
         <CDropdownItem>
           <CIcon name="cil-lock-locked" className="mfe-2" /> 

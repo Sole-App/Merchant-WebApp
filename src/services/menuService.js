@@ -1,6 +1,6 @@
 import { HTTPService } from "./common";
 
-const apiEndpoint = process.env.REACT_APP_MERCHANT_API_URL + "/products";
+const apiEndpoint = process.env.REACT_APP_MERCHANT_API_URL + "/menus";
 
 async function List() {  
   return await HTTPService.get(apiEndpoint);

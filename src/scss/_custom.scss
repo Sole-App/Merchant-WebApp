@@ -7,12 +7,12 @@
     margin-bottom: 1em;
 }
 
-.card-body{
+.card-body {
     padding: 0.75rem;
 }
 
 
-.form-control-plaintext{
+.form-control-plaintext {
     display: block;
     width: 100%;
     /*height: calc(5em + 1rem + 5px);*/
@@ -25,7 +25,7 @@
     border: 1px solid;
     color: #5c6873;
     background-color: #fff;
-    border-color: #e4e7ea;    
+    border-color: #e4e7ea;
     border-radius: 0.25rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -36,6 +36,10 @@
     border-color: #8ad4ee;
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(50, 31, 219, 0.25);
+}
+
+.table h2 svg[role="img"] {
+    display: none;
 }
 
 //(min-width: 992px)

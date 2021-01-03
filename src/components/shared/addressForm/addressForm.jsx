@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
   CRow,
-  CCol,
-  CForm,
-  CInput,
-  CSelect,
-  CTextarea,
-  CFormGroup,
-  CButton,
+  CCol,  
+  CInput,  
+  CFormGroup,  
 } from "@coreui/react";
 import * as yup from "yup";
-import { useForm } from "react-hook-form";
 
 import { ErrorMessage } from "../../commons";
-import { useInputsChanged } from "../../../hooks";
 
 import "./style.css";
 

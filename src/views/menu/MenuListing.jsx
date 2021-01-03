@@ -1,48 +1,48 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
-  CBadge,
   CCard,
   CCardBody,
   CCardHeader,
   CCol,
   CDataTable,
   CRow,
-  CPagination,
   CButton,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { freeSet } from "@coreui/icons";
 
-import { ProductService } from "../../services";
+import { MenuService } from "../../services";
 
-const ProductsListing = () => {
-  const [products, setProducts] = useState([]);
+const MenuListing = () => {
+  const [menus, setMenus] = useState([]);
 
   const history = useHistory();
 
   useEffect(() => {
-    getProducts();
+    getMenus();
   }, []);
 
-  const getProducts = async () => {
-    ProductService.List().then((response) => {
-      setProducts(response.data);
-    });
+  const getMenus = async () => {
+    MenuService.List()
+      .then((response) => {
+        setMenus(response.data);
+      })
+      .finally(() => {});
   };
 
   const redirectToCreatePage = () => {
-    history.push(`/product/create`);
+    history.push(`/menu/create`);
   };
 
   const handleEditItem = (item) => {
-    history.push(`/product/edit/${item.id}`);
+    history.push(`/menu/edit/${item.id}`);
   };
 
   const handleDeleteItem = (item) => {
-    ProductService.Delete(item.id)
+    MenuService.Delete(item.id)
       .then((response) => {
-        getProducts();
+        getMenus();
       })
       .catch((err) => {})
       .finally(() => {});
@@ -87,7 +87,7 @@ const ProductsListing = () => {
                 xxl={10}
                 className="font-weight-bold align-middle"
               >
-                <div className="font-weight-bold align-middle">Products</div>
+                <div className="font-weight-bold align-middle">Menus</div>
               </CCol>
               <CCol
                 xs={2}
@@ -106,25 +106,20 @@ const ProductsListing = () => {
           </CCardHeader>
           <CCardBody>
             <CDataTable
-              items={products}
+              items={menus}
               fields={fields}
               columnFilter
+              //tableFilter
               hover
-              sorter
+              striped
               itemsPerPage={50}
-              //activePage={page}
-              //clickableRows
-              //onRowClick={(item) => history.push(`/product/edit/${item.id}`)}
               scopedSlots={{
                 name: (item, index) => {
                   return (
                     <td>
-                      <Link to={`/product/edit/${item.id}`}>{item.name}</Link>
+                      <Link to={`/menu/edit/${item.id}`}>{item.name}</Link>
                     </td>
                   );
-                },
-                created_at: (item, index) => {
-                  return <td>{item.created_at}</td>;
                 },
                 edit_button: (item, index) => {
                   return (
@@ -160,4 +155,4 @@ const ProductsListing = () => {
   );
 };
 
-export default ProductsListing;
+export default MenuListing;

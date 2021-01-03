@@ -5,11 +5,11 @@ import {
   CToggler,
   CHeaderBrand,
   CHeaderNav,
-  CHeaderNavItem,
-  CHeaderNavLink,
+  // CHeaderNavItem,
+  // CHeaderNavLink,
   CSubheader,
   CBreadcrumbRouter,
-  CLink
+  //CLink
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 
@@ -18,14 +18,14 @@ import routes from '../routes'
 
 import { 
   TheHeaderDropdown,
-  TheHeaderDropdownMssg,
-  TheHeaderDropdownNotif,
-  TheHeaderDropdownTasks
+  // TheHeaderDropdownMssg,
+  // TheHeaderDropdownNotif,
+  // TheHeaderDropdownTasks
 }  from './index'
 
 const TheHeader = () => {
   const dispatch = useDispatch()
-  const asideShow = useSelector(state => state.asideShow)
+  //const asideShow = useSelector(state => state.asideShow)
   const darkMode = useSelector(state => state.darkMode)
   const sidebarShow = useSelector(state => state.sidebarShow)
 

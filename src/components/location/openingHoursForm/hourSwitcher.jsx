@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { CRow, CCol, CSelect, CSwitch, CLabel } from "@coreui/react";
 
 import { time as timeHelper } from "../../../helpers";
@@ -51,7 +51,7 @@ function HourSwitcher({ item, onChange, onTimeChange }) {
                         onChange={handleTimeChange}
                       >
                         {timeHelper.listTimes(15).map((i) =>
-                          i == data.hours[0].opensAt ? (
+                          i === data.hours[0].opensAt ? (
                             <option key={i} value={i} selected>
                               {i}
                             </option>
@@ -73,7 +73,7 @@ function HourSwitcher({ item, onChange, onTimeChange }) {
                         onChange={handleTimeChange}
                       >
                         {timeHelper.listTimes(15).map((i) =>
-                          i == item.hours[0].closesAt ? (
+                          i === item.hours[0].closesAt ? (
                             <option key={i} value={i} selected>
                               {i}
                             </option>

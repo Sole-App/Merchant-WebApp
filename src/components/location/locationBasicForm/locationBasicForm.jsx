@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
   CRow,
-  CCol,
-  CForm,
-  CInput,
-  CSelect,
+  CCol,  
+  CInput,  
   CTextarea,
-  CFormGroup,
-  CButton,
+  CFormGroup,  
 } from "@coreui/react";
 import * as yup from "yup";
 
-import { useInputsChanged } from "../../../hooks";
 import { ErrorMessage } from "../../commons";
 
 import "./style.css";
@@ -34,13 +30,13 @@ function LocationBasicForm({ item, onItemUpdated, onItemValid }) {
     latitude: yup.string().optional(),
     longitude: yup.string().optional(),
   });
-console.log(item);
+
   const [data, setData] = useState(item ? item : initialValues);
   const [formErrors, setFormErrors] = useState([]);
 
   useEffect(() => {
     onItemUpdated(data);
-  }, [data])
+  }, [data, onItemUpdated])
 
   const handleInputChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -56,6 +52,7 @@ console.log(item);
           const errors = { ...formErrors };
           err.inner.map((val) => {
             errors[val.path] = val.message;
+            return errors[val.path];
           });
           setFormErrors(errors);
         }

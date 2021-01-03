@@ -2,14 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   CRow,
   CCol,
-  CForm,
-  CInput,
-  CSelect,
-  CTextarea,
-  CFormGroup,
-  CButton,
-  CSwitch,
-  CLabel,
 } from "@coreui/react";
 import * as yup from "yup";
 
@@ -71,7 +63,7 @@ function OpeningHoursForm({ item, onItemUpdated, onItemValid }) {
     const name = e.name.toLowerCase();
     const newData = data[name];
 
-    if (e.value == "false") {
+    if (e.value === "false") {
       newData.hours.push({
         opensAt: "10:00 AM",
         closesAt: "05:00 PM",

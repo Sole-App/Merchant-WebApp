@@ -10,6 +10,4 @@ function getValue(jwtDecoded, text) {
   return result;
 }
 
-export default {
-  getValue,
-};
+export default { getValue };

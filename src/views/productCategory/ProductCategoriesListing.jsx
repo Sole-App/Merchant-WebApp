@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import {
   CBadge,
   CCard,
@@ -78,8 +78,8 @@ const ProductCategoriesListing = () => {
       key: "created_at",
       label: "Created Date",
       _style: { width: "20%" },
-      sorter: true,
-      filter: true,
+      sorter: false,
+      filter: false,
     },
     {
       key: "edit_button",
@@ -125,7 +125,7 @@ const ProductCategoriesListing = () => {
                 xxl={2}
                 className="text-right"
               >
-                <CButton color="info" onClick={redirectToCreatePage}>
+                <CButton color="info" onClick={redirectToCreatePage} className="text-white">
                   <CIcon content={freeSet.cilPlus} />
                 </CButton>
               </CCol>
@@ -136,13 +136,22 @@ const ProductCategoriesListing = () => {
               items={productCategories}
               fields={fields}
               columnFilter
-              tableFilter
+              //tableFilter
               hover
               sorter
               itemsPerPage={50}
               //activePage={page}
               //clickableRows
               scopedSlots={{
+                name: (item, index) => {
+                  return (
+                    <td>
+                      <Link to={`/productcategory/edit/${item.id}`}>
+                        {item.name}
+                      </Link>
+                    </td>
+                  );
+                },
                 parent_category: (item, index) => {
                   if (item && item.parent_category) {
                     return <td>{item.parent_category.name} </td>;
@@ -158,6 +167,7 @@ const ProductCategoriesListing = () => {
                     <td>
                       <CButton
                         color="warning"
+                        className="text-white"
                         onClick={() => handleEditItem(item)}
                       >
                         <CIcon content={freeSet.cilPen} />
@@ -178,9 +188,6 @@ const ProductCategoriesListing = () => {
                   );
                 },
               }}
-              // onRowClick={(item) =>
-              //   history.push(`/productcategory/edit/${item.id}`)
-              // }
             ></CDataTable>
           </CCardBody>
         </CCard>

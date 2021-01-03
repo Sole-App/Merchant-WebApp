@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
-  CBadge,
   CCard,
   CCardBody,
   CCardHeader,
   CCol,
   CDataTable,
   CRow,
-  CPagination,
   CButton,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
@@ -124,15 +122,15 @@ const LocationsListing = () => {
               itemsPerPage={20}
               scopedSlots={{
                 name: (item, index) => {
-                  if (item && item.name) {
-                    return <td>{item.name} </td>;
-                  }
-
-                  return <td></td>;
+                  return (
+                    <td>                      
+                      <Link to={`/location/edit/${item.id}`}>{item.name}</Link>
+                    </td>
+                  );
                 },
                 email: (item, index) => {
                   if (item && item.email) {
-                    return <td>{item.email} </td>;
+                    return <td><a href={``}>{item.email}</a></td>;
                   }
 
                   return <td></td>;
