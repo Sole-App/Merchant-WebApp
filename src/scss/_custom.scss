@@ -1,8 +1,43 @@
 // Here you can add other styles
-.c-main{
+.c-main {
     padding-top: 1rem;
 }
 
-.card{
-    margin-bottom: 0; 
+.card {
+    margin-bottom: 1em;
 }
+
+.card-body{
+    padding: 0.75rem;
+}
+
+
+.form-control-plaintext{
+    display: block;
+    width: 100%;
+    /*height: calc(5em + 1rem + 5px);*/
+    height: calc(8em + 0.5rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    background-clip: padding-box;
+    border: 1px solid;
+    color: #5c6873;
+    background-color: #fff;
+    border-color: #e4e7ea;    
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control-plaintext:focus {
+    color: #5c6873;
+    background-color: #fff;
+    border-color: #8ad4ee;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(50, 31, 219, 0.25);
+}
+
+//(min-width: 992px)
+//html:not([dir="rtl"]) .c-sidebar.c-sidebar-lg-show:not(.c-sidebar-right).c-sidebar-fixed ~ .c-wrapper, html:not([dir="rtl"]) .c-sidebar.c-sidebar-show:not(.c-sidebar-right).c-sidebar-fixed ~ .c-wrapper
+// margin-left: 15%

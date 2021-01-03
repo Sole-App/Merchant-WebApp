@@ -28,11 +28,14 @@ const ProductCategoriesListing = () => {
   // }
 
   useEffect(() => {
+    listItems();
+  }, []);
+
+  const listItems = async () => {
     ProductCategoryService.List().then((response) => {
       setProductCategories(response.data);
-      //console.log(response.data);
     });
-  }, []);
+  };
 
   // useEffect(() => {
   //   currentPage !== page && setPage(currentPage)
@@ -40,6 +43,20 @@ const ProductCategoriesListing = () => {
 
   const redirectToCreatePage = () => {
     history.push(`/productcategory/create`);
+  };
+
+  const handleEditItem = (item) => {
+    history.push(`/productcategory/edit/${item.id}`);
+  };
+
+  const handleDeleteItem = (item) => {
+    ProductCategoryService.Delete(item.id)
+      .then((response) => {
+        console.log(response);
+        listItems();
+      })
+      .catch((err) => {})
+      .finally(() => {});
   };
 
   const fields = [
@@ -53,7 +70,7 @@ const ProductCategoriesListing = () => {
     {
       key: "parent_category",
       label: "Parent",
-      _style: { width: "40%" },
+      _style: { width: "30%" },
       sorter: true,
       filter: true,
     },
@@ -63,6 +80,20 @@ const ProductCategoriesListing = () => {
       _style: { width: "20%" },
       sorter: true,
       filter: true,
+    },
+    {
+      key: "edit_button",
+      label: "",
+      _style: { width: "10%" },
+      sorter: false,
+      filter: false,
+    },
+    {
+      key: "delete_button",
+      label: "",
+      _style: { width: "10%" },
+      sorter: false,
+      filter: false,
     },
   ];
 
@@ -122,16 +153,38 @@ const ProductCategoriesListing = () => {
                 created_at: (item, index) => {
                   return <td>{item.created_at}</td>;
                 },
+                edit_button: (item, index) => {
+                  return (
+                    <td>
+                      <CButton
+                        color="warning"
+                        onClick={() => handleEditItem(item)}
+                      >
+                        <CIcon content={freeSet.cilPen} />
+                      </CButton>
+                    </td>
+                  );
+                },
+                delete_button: (item, index) => {
+                  return (
+                    <td>
+                      <CButton
+                        color="danger"
+                        onClick={() => handleDeleteItem(item)}
+                      >
+                        <CIcon content={freeSet.cilTrash} />
+                      </CButton>
+                    </td>
+                  );
+                },
               }}
-              onRowClick={(item) =>
-                history.push(`/productcategory/edit/${item.id}`)
-              }
+              // onRowClick={(item) =>
+              //   history.push(`/productcategory/edit/${item.id}`)
+              // }
             ></CDataTable>
           </CCardBody>
         </CCard>
       </CCol>
-
-      <CCol md={8} style={{ border: "1px solid red" }}></CCol>
     </CRow>
   );
 };

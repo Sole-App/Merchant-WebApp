@@ -10,7 +10,9 @@ const ErrorMessage = ({ messages, message, ...rest }) => {
       {messages && messages.length > 0 && (
         <div className="alert alert-danger error-messages">
           <ul className="mb-0 pl-3">
-            {messages.map((e, i) => <li key={i}>{e}</li>)}
+            {messages.map((e, i) => {
+              return (<li key={i}>{e}</li>);
+            })}
           </ul>
         </div>
       )}

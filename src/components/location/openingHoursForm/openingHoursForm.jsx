@@ -13,362 +13,155 @@ import {
 } from "@coreui/react";
 import * as yup from "yup";
 
-import useSubmitForm from "../../../hooks/useSubmitForm";
-import { LocationService } from "../../../services";
+import { useInputsChanged } from "../../../hooks";
+
+import HourSwitcher from "./hourSwitcher";
 
 import "./style.css";
 
-function OpeningHoursForm({ data, OnSubmit }) {
-  const intialValues = {
-    sunday: {},
-    monday: {},
-    tuesday: {},
-    wedesnday: {},
-    thursday: {},
-    friday: {},
-    saturday: {},
+function OpeningHoursForm({ item, onItemUpdated, onItemValid }) {
+  const initialValues = {
+    sunday: {
+      weekday: 1,
+      weekday_name: "Sunday",
+      hours: [],
+    },
+    monday: {
+      weekday: 2,
+      weekday_name: "Monday",
+      hours: [],
+    },
+    tuesday: {
+      weekday: 3,
+      weekday_name: "Tuesday",
+      hours: [],
+    },
+    wednesday: {
+      weekday: 4,
+      weekday_name: "Wednesday",
+      hours: [],
+    },
+    thursday: {
+      weekday: 5,
+      weekday_name: "Thursday",
+      hours: [],
+    },
+    friday: {
+      weekday: 6,
+      weekday_name: "Friday",
+      hours: [],
+    },
+    saturday: {
+      weekday: 7,
+      weekday_name: "Saturday",
+      hours: [],
+    },
   };
 
   let schema = yup.object().shape({});
 
-  const [formValues, setFormValues] = useState(intialValues);
-  const [formErrors, setFormErrors] = useState({});
-  const [formValid, setFormValid] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const [inputsUpdated, setInputsUpdated] = useState(false);
-
-  useEffect(() => {}, []);
-
-  useEffect(() => {}, [inputsUpdated]);
-
-  const inputsUpdatedCallback = (inputs) => {
-    setInputsUpdated(!inputsUpdated);
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
-  };
-
-  const submit = (event) => {
-    event.preventDefault();
-
-    const { name, value } = event.target;
-    setFormValues({ ...formValues, [name]: value });
-
-    schema.validate(formValues).catch(function (err) {
-      console.log(err.name);
-      // err.name; // => 'ValidationError'
-      // err.errors; // => [{ key: 'field_too_short', values: { min: 18 } }]
-    });
-
-    OnSubmit(formValues);
-  };
+  const [data, setData] = useState(item ? item : initialValues);
+  const [formErrors, setFormErrors] = useState([]);
 
   useEffect(() => {
-    if (Object.keys(formErrors).length === 0 && isSubmitting) {
-      submit();
-    }
-  }, [formErrors]);
+    onItemUpdated(data);
+  }, [data]);
 
-  const { inputs, handleInputChange, handleSubmit } = useSubmitForm(
-    intialValues,
-    inputsUpdatedCallback,
-    submit
-  );
+  const handleSwitchChange = (e) => {
+    const name = e.name.toLowerCase();
+    const newData = data[name];
+
+    if (e.value == "false") {
+      newData.hours.push({
+        opensAt: "10:00 AM",
+        closesAt: "05:00 PM",
+      });
+    } else {
+      newData.hours = [];
+    }
+
+    setData({ ...data, [name]: newData });
+    onItemUpdated(data);
+  };
+
+  const handleTimeChange = (e) => {
+    const name = e.name.toLowerCase();
+    const weekday = e.getAttribute("data-weekday");
+
+    const newData = data[weekday.toLowerCase()];
+    if (name === "opensat") {
+      newData.hours[0].opensAt = e.value;
+    } else {
+      newData.hours[0].closesAt = e.value;
+    }
+
+    setData({ ...data, [weekday.toLowerCase()]: newData });
+
+    // console.log(data);
+    // setData(data);
+
+    //setData({ ...data, data });
+    //onItemUpdated(data);
+
+    //console.log(data[weekday.toLowerCase()]);
+
+    // schema
+    //   .validate(data, { abortEarly: false })
+    //   .then((result) => {
+    //     setFormErrors({});
+    //     onItemValid(true);
+    //   })
+    //   .catch(function (err) {
+    //     if (err && err.inner && err.inner.length > 0) {
+    //       const errors = { ...formErrors };
+    //       err.inner.map((val) => {
+    //         errors[val.path] = val.message;
+    //       });
+    //       setFormErrors(errors);
+    //     }
+    //     onItemValid(false);
+    //   })
+    //   .finally(() => {});
+  };
 
   return (
     <CRow>
       <CCol xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-
-        <CRow>
-          <CCol
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            xl={12}
-            xxl={12}            
-          >
-            <CRow>
-              <CCol
-                xs={12}
-                sm={12}
-                md={2}
-                lg={2}
-                xl={2}
-                xxl={1}
-                className="pr-0"
-              >
-                <CSwitch
-                  id="sunday"
-                  name="sunday"
-                  value={inputs.sunday}
-                  onChange={handleInputChange}
-                  placeholder="Sunday"
-                  variant="3d"
-                  labelOn="On"
-                  labelOff="Off"
-                  shape="square"
-                  size="lg"
-                />
-              </CCol>
-              <CCol
-                xs={12}
-                sm={12}
-                md={1}
-                lg={1}
-                xl={3}
-                xxl={3}
-                className="pl-0"
-              >
-                <CLabel>Sunday</CLabel>
-              </CCol>
-            </CRow>
-          </CCol>
-        </CRow>
-
-        <CRow>
-          <CCol xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-            <CRow>
-              <CCol
-                xs={12}
-                sm={12}
-                md={2}
-                lg={2}
-                xl={2}
-                xxl={1}
-                className="pr-0"
-              >
-                <CSwitch
-                  id="monday"
-                  name="monday"
-                  value={inputs.monday}
-                  onChange={handleInputChange}
-                  placeholder="Monday"
-                  variant="3d"
-                  labelOn="On"
-                  labelOff="Off"
-                  shape="square"
-                  size="lg"
-                />
-              </CCol>
-              <CCol
-                xs={12}
-                sm={12}
-                md={1}
-                lg={1}
-                xl={3}
-                xxl={3}
-                className="pl-0"
-              >
-                <CLabel>Monday</CLabel>
-              </CCol>
-            </CRow>
-          </CCol>
-        </CRow>
-
-        <CRow>
-          <CCol xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-            <CRow>
-              <CCol
-                xs={12}
-                sm={12}
-                md={2}
-                lg={2}
-                xl={2}
-                xxl={1}
-                className="pr-0"
-              >
-                <CSwitch
-                  id="tuesday"
-                  name="tuesday"
-                  value={inputs.tuesday}
-                  onChange={handleInputChange}
-                  placeholder="Tuesday"
-                  variant="3d"
-                  labelOn="On"
-                  labelOff="Off"
-                  shape="square"
-                  size="lg"
-                />
-              </CCol>
-              <CCol
-                xs={12}
-                sm={12}
-                md={1}
-                lg={1}
-                xl={3}
-                xxl={3}
-                className="pl-0"
-              >
-                <CLabel>Tuesday</CLabel>
-              </CCol>
-            </CRow>
-          </CCol>
-        </CRow>
-
-        <CRow>
-          <CCol xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-            <CRow>
-              <CCol
-                xs={12}
-                sm={12}
-                md={2}
-                lg={2}
-                xl={2}
-                xxl={1}
-                className="pr-0"
-              >
-                <CSwitch
-                  id="wednesday"
-                  name="wednesday"
-                  value={inputs.wednesday}
-                  onChange={handleInputChange}
-                  placeholder="Wednesday"
-                  variant="3d"
-                  labelOn="On"
-                  labelOff="Off"
-                  shape="square"
-                  size="lg"
-                />
-              </CCol>
-              <CCol
-                xs={12}
-                sm={12}
-                md={1}
-                lg={1}
-                xl={3}
-                xxl={3}
-                className="pl-0"
-              >
-                <CLabel>Wednesday</CLabel>
-              </CCol>
-            </CRow>
-          </CCol>
-        </CRow>
-
-        <CRow>
-          <CCol xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-            <CRow>
-              <CCol
-                xs={12}
-                sm={12}
-                md={2}
-                lg={2}
-                xl={2}
-                xxl={1}
-                className="pr-0"
-              >
-                <CSwitch
-                  id="thursday"
-                  name="thursday"
-                  value={inputs.thursday}
-                  onChange={handleInputChange}
-                  placeholder="Thursday"
-                  variant="3d"
-                  labelOn="On"
-                  labelOff="Off"
-                  shape="square"
-                  size="lg"
-                />
-              </CCol>
-              <CCol
-                xs={12}
-                sm={12}
-                md={1}
-                lg={1}
-                xl={3}
-                xxl={3}
-                className="pl-0"
-              >
-                <CLabel>Thursday</CLabel>
-              </CCol>
-            </CRow>
-          </CCol>
-        </CRow>
-
-        <CRow>
-          <CCol xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-            <CRow>
-              <CCol
-                xs={12}
-                sm={12}
-                md={2}
-                lg={2}
-                xl={2}
-                xxl={1}
-                className="pr-0"
-              >
-                <CSwitch
-                  id="friday"
-                  name="friday"
-                  value={inputs.friday}
-                  onChange={handleInputChange}
-                  placeholder="Friday"
-                  variant="3d"
-                  labelOn="On"
-                  labelOff="Off"
-                  shape="square"
-                  size="lg"
-                />
-              </CCol>
-              <CCol
-                xs={12}
-                sm={12}
-                md={1}
-                lg={1}
-                xl={3}
-                xxl={3}
-                className="pl-0"
-              >
-                <CLabel>Friday</CLabel>
-              </CCol>
-            </CRow>
-          </CCol>
-        </CRow>
-
-        <CRow>
-          <CCol xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-            <CRow>
-              <CCol
-                xs={12}
-                sm={12}
-                md={2}
-                lg={2}
-                xl={2}
-                xxl={1}
-                className="pr-0"
-              >
-                <CSwitch
-                  id="saturday"
-                  name="saturday"
-                  value={inputs.saturday}
-                  onChange={handleInputChange}
-                  placeholder="Saturday"
-                  variant="3d"
-                  labelOn="On"
-                  labelOff="Off"
-                  shape="square"
-                  size="lg"
-                />
-              </CCol>
-              <CCol
-                xs={12}
-                sm={12}
-                md={1}
-                lg={1}
-                xl={3}
-                xxl={3}
-                className="pl-0"
-              >
-                <CLabel>Saturday</CLabel>
-              </CCol>
-            </CRow>
-          </CCol>
-        </CRow>
-
+        <HourSwitcher
+          item={data["sunday"]}
+          onChange={handleSwitchChange}
+          onTimeChange={handleTimeChange}
+        />
+        <HourSwitcher
+          item={data["monday"]}
+          onChange={handleSwitchChange}
+          onTimeChange={handleTimeChange}
+        />
+        <HourSwitcher
+          item={data["tuesday"]}
+          onChange={handleSwitchChange}
+          onTimeChange={handleTimeChange}
+        />
+        <HourSwitcher
+          item={data["wednesday"]}
+          onChange={handleSwitchChange}
+          onTimeChange={handleTimeChange}
+        />
+        <HourSwitcher
+          item={data["thursday"]}
+          onChange={handleSwitchChange}
+          onTimeChange={handleTimeChange}
+        />
+        <HourSwitcher
+          item={data["friday"]}
+          onChange={handleSwitchChange}
+          onTimeChange={handleTimeChange}
+        />
+        <HourSwitcher
+          item={data["saturday"]}
+          onChange={handleSwitchChange}
+          onTimeChange={handleTimeChange}
+        />
       </CCol>
     </CRow>
   );

@@ -15,6 +15,7 @@ async function Get(id) {
 
 async function Create(data) {
   //HTTPService.addBearerAuthorization();
+  console.log(data);
   return await HTTPService.post(apiEndpoint, data);
 }
 

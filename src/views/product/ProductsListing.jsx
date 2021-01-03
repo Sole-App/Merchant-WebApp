@@ -12,7 +12,7 @@ import {
   CButton,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import { freeSet } from '@coreui/icons'
+import { freeSet } from "@coreui/icons";
 
 import { ProductService } from "../../services";
 
@@ -60,7 +60,15 @@ const ProductsListing = () => {
               >
                 <div className="font-weight-bold align-middle">Products</div>
               </CCol>
-              <CCol xs={2} sm={2} md={2} lg={2} xl={2} xxl={2} className="text-right pr-0">
+              <CCol
+                xs={2}
+                sm={2}
+                md={2}
+                lg={2}
+                xl={2}
+                xxl={2}
+                className="text-right pr-0"
+              >
                 <CButton color="info" onClick={redirectToCreatePage}>
                   <CIcon content={freeSet.cilPlus} />
                 </CButton>
@@ -77,7 +85,7 @@ const ProductsListing = () => {
               //activePage={page}
               clickableRows
               onRowClick={(item) => history.push(`/product/edit/${item.id}`)}
-            />
+            ></CDataTable>
 
             {/* <CPagination
             activePage={page}
