@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import {
-  CBadge,
+import { Link, useHistory } from "react-router-dom";
+import {  
   CCard,
   CCardBody,
   CCardHeader,
   CCol,
   CDataTable,
-  CRow,
-  CPagination,
+  CRow,  
   CButton,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";

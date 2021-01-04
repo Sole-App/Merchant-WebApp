@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
-import {
-  CRow,
-  CCol,  
-  CInput,  
-  CTextarea,
-  CFormGroup,  
-} from "@coreui/react";
+import { CRow, CCol, CInput, CTextarea, CFormGroup } from "@coreui/react";
 import * as yup from "yup";
 
 import { ErrorMessage } from "../../commons";
+import { Schemas } from "../../../validations";
+import { UseValidateFormData } from "../../../hooks";
 
 import "./style.css";
 
@@ -22,43 +18,63 @@ function LocationBasicForm({ item, onItemUpdated, onItemValid }) {
     longitude: "",
   };
 
-  let schema = yup.object().shape({
-    name: yup.string().required().label("Name"),
-    description: yup.string().optional(),
-    email: yup.string().email().optional(),
-    phone_number: yup.string().optional(),
-    latitude: yup.string().optional(),
-    longitude: yup.string().optional(),
-  });
+  // let schema = yup.object().shape({
+  //   name: yup.string().required().label("Name"),
+  //   description: yup.string().optional(),
+  //   email: yup.string().email().optional(),
+  //   phone_number: yup.string().optional(),
+  //   latitude: yup.string().optional(),
+  //   longitude: yup.string().optional(),
+  // });
 
   const [data, setData] = useState(item ? item : initialValues);
   const [formErrors, setFormErrors] = useState([]);
 
   useEffect(() => {
     onItemUpdated(data);
-  }, [data, onItemUpdated])
+  }, [data, onItemUpdated]);
 
   const handleInputChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
 
-    schema
-      .validate(data, { abortEarly: false })
-      .then((result) => {
-        setFormErrors({});
-        onItemValid(true);
-      })
-      .catch(function (err) {
-        if (err && err.inner && err.inner.length > 0) {
-          const errors = { ...formErrors };
-          err.inner.map((val) => {
-            errors[val.path] = val.message;
-            return errors[val.path];
-          });
-          setFormErrors(errors);
-        }
-        onItemValid(false);
-      })
-      .finally(() => {});
+    const { isValid, err } = UseValidateFormData(
+      Schemas.locationBasicFormSchema,
+      data
+    );
+
+    if (isValid) {
+      setFormErrors({});
+      onItemValid(true);
+    } else {
+      if (err && err.inner && err.inner.length > 0) {
+        const errors = { ...formErrors };
+        err.inner.map((val) => {
+          errors[val.path] = val.message;
+          return errors[val.path];
+        });
+        setFormErrors(errors);
+      }
+      onItemValid(false);
+    }
+
+    // Schemas.locationBasicFormSchema
+    //   .validate(data, { abortEarly: false })
+    //   .then((result) => {
+    //     setFormErrors({});
+    //     onItemValid(true);
+    //   })
+    //   .catch(function (err) {
+    //     if (err && err.inner && err.inner.length > 0) {
+    //       const errors = { ...formErrors };
+    //       err.inner.map((val) => {
+    //         errors[val.path] = val.message;
+    //         return errors[val.path];
+    //       });
+    //       setFormErrors(errors);
+    //     }
+    //     onItemValid(false);
+    //   })
+    //   .finally(() => {});
   };
 
   return (

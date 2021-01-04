@@ -1,16 +1,24 @@
 import React from 'react'
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {
   CBadge,
   CDropdown,
   CDropdownItem,
   CDropdownMenu,
   CDropdownToggle,
-  CImg
+  CImg,
+  CLink,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 
 const TheHeaderDropdown = () => {
+
+  const history = useHistory();
+
+  const handleProfile = () => {
+    history.push(`/account/profile`);
+  }
+
   return (
     <CDropdown
       inNav
@@ -63,8 +71,9 @@ const TheHeaderDropdown = () => {
         >
           <strong>Settings</strong>
         </CDropdownItem> */}
-        <CDropdownItem>
-          <CIcon name="cil-user" className="mfe-2" /><Link to="/account/profile">Profile</Link>
+        <CDropdownItem onClick={handleProfile}>
+          <CIcon name="cil-user" className="mfe-2" />
+          Profile
         </CDropdownItem>
         {/* <CDropdownItem>
           <CIcon name="cil-settings" className="mfe-2" /> 
@@ -82,7 +91,7 @@ const TheHeaderDropdown = () => {
         </CDropdownItem> */}
         <CDropdownItem divider />
         <CDropdownItem>
-          <CIcon name="cil-lock-locked" className="mfe-2" /> 
+          <CIcon name="cil-lock-locked" className="mfe-2" />
           Lock Account
         </CDropdownItem>
       </CDropdownMenu>

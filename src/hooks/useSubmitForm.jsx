@@ -1,7 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 const useSubmitForm = (initialValues, inputsUpdated, submit) => {
-  const [inputs, setInputs] = useState(initialValues);
+  const [inputs, setInputs] = React.useState(initialValues);
 
   const handleSubmit = (event) => {
     if (event) {

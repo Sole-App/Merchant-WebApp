@@ -1,3 +1,4 @@
 import ErrorMessage from "./errorMessage";
+import ProtectedRoute from "./protectedRoute";
 
-export { ErrorMessage };
+export { ProtectedRoute, ErrorMessage };

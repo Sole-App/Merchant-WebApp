@@ -144,7 +144,8 @@ const LocationEdit = (props) => {
   };
 
   return (
-    <div>
+ <CRow >
+    <CCol xs={12} sm={12} md={12} lg={12} xl={12} xxl={12} className="p-0">
       <CRow>
         <CCol xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
           <ErrorMessage message={errors.forms} />
@@ -213,12 +214,9 @@ const LocationEdit = (props) => {
           </CCol>
         </CRow>
       </CForm>
-    </div>
+ </CCol>
+        </CRow>
   );
 };
 
 export default LocationEdit;
-
-
-
-

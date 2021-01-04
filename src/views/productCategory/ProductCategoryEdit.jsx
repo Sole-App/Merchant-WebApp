@@ -11,9 +11,10 @@ import {
 
 import { ProductCategoryService } from "../../services";
 
-import ProductCategoryForm from "../../components/productCategory/ProductCategoryForm";
+import { ProductCategoryForm } from "../../components/productCategory";
 
 const ProductCategoryEdit = () => {
+
   const handleSubmit = async (inputs) => {
     ProductCategoryService.Create(inputs).then((response) => {
       alert("ProductCategory created: " + response.data.id);

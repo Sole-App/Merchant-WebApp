@@ -36,6 +36,7 @@
     "codemirror": "^5.56.0",
     "core-js": "^3.6.5",
     "email-validator": "^2.0.4",
+    "env-cmd": "^10.1.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.3",
     "formik": "^2.1.5",
@@ -73,6 +74,9 @@
   "scripts": {
     "start": "set HTTPS=true&&react-scripts start",
     "build": "react-scripts build",
+    "build:development": "env-cmd -f .env.development react-scripts build",
+    "build:staging": "env-cmd -f .env.staging react-scripts build",
+    "build:uat": "env-cmd -f .env.uat react-scripts build",
     "test": "react-scripts test",
     "clearCache": "jest --clearCache",
     "test:cov": "npm test -- --coverage --watchAll=false",

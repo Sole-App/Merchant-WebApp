@@ -1,5 +1,5 @@
-import useValidateData from "./useValidateData";
-import useInputsChanged from "./useInputsChanged";
-import useSubmitForm from "./useSubmitForm";
+import UseValidateFormData from "./useValidateFormData";
+import UseInputsChanged from "./useInputsChanged";
+import UseSubmitForm from "./useSubmitForm";
 
-export { useSubmitForm, useInputsChanged, useValidateData };
+export { UseSubmitForm, UseInputsChanged, UseValidateFormData };

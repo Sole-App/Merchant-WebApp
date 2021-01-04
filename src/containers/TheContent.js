@@ -8,6 +8,8 @@ import { CContainer, CFade } from '@coreui/react'
 
 // routes config
 import routes from '../routes'
+
+import { ProtectedRoute } from '../components/commons'
   
 const loading = (
   <div className="pt-3 text-center">
@@ -23,7 +25,7 @@ const TheContent = () => {
           <Switch>
             {routes.map((route, idx) => {
               return route.component && (
-                <Route
+                <ProtectedRoute
                   key={idx}
                   path={route.path}
                   exact={route.exact}
@@ -35,7 +37,7 @@ const TheContent = () => {
                   )} />
               )
             })}
-            <Redirect from="/" to="/dashboard" />
+            {/* <Redirect from="/" to="/dashboard" /> */}
           </Switch>
         </Suspense>
       </CContainer>

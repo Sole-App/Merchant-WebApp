@@ -6,7 +6,7 @@ const TheFooter = () => {
     <CFooter fixed={false}>
       <div>
         <a href="https://sole.com.au" target="_blank" rel="noopener noreferrer">Sole</a>
-        <span className="ml-1">&copy; 2020.</span>
+        <span className="ml-1">&copy; 2020</span>
       </div>
       <div className="mfs-auto">
         {/* <span className="mr-1">Powered by</span>

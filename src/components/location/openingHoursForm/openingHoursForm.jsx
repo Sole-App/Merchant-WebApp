@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  CRow,
-  CCol,
-} from "@coreui/react";
+import { CRow, CCol } from "@coreui/react";
 import * as yup from "yup";
 
 import { useInputsChanged } from "../../../hooks";
@@ -88,32 +85,6 @@ function OpeningHoursForm({ item, onItemUpdated, onItemValid }) {
     }
 
     setData({ ...data, [weekday.toLowerCase()]: newData });
-
-    // console.log(data);
-    // setData(data);
-
-    //setData({ ...data, data });
-    //onItemUpdated(data);
-
-    //console.log(data[weekday.toLowerCase()]);
-
-    // schema
-    //   .validate(data, { abortEarly: false })
-    //   .then((result) => {
-    //     setFormErrors({});
-    //     onItemValid(true);
-    //   })
-    //   .catch(function (err) {
-    //     if (err && err.inner && err.inner.length > 0) {
-    //       const errors = { ...formErrors };
-    //       err.inner.map((val) => {
-    //         errors[val.path] = val.message;
-    //       });
-    //       setFormErrors(errors);
-    //     }
-    //     onItemValid(false);
-    //   })
-    //   .finally(() => {});
   };
 
   return (

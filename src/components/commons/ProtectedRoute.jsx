@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { LocalStorage } from "../../services";
+import { LocalStorageService } from "../../services";
 import { string } from "../../helpers";
 
 const ProtectedRoute = ({
@@ -16,7 +16,7 @@ const ProtectedRoute = ({
       {...rest}
       history={history}
       render={(props) => {
-        if (!LocalStorage.getCurrentUser()) {
+        if (!LocalStorageService.getToken()) {
           return (
             <Redirect
               to={{
@@ -25,7 +25,7 @@ const ProtectedRoute = ({
               }}
             />
           );
-        } else if (!string.containsAny(AuthService.getRole(), roles)) {
+        } else if (!string.containsAny(LocalStorageService.getRoles(), roles)) {
           // Check roles, If the user doesn't contain any role, redirect the user to page 403
           return (
             <Redirect

@@ -11,8 +11,8 @@ function ProductBasicForm({ item, OnSubmit }) {
   const intialValues = {
     name: "",
     description: "",
-    category_id: null,
-    subcategory_id: null,
+    category_id: undefined,
+    subcategory_id: undefined,
     cost: undefined,
     price: undefined,
   };
