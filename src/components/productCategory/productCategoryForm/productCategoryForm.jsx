@@ -13,7 +13,7 @@ function ProductCategoryForm({
   checkForm,
   onItemUpdated = () => {},
   onItemValid = () => {},
-  onItemInvalid = () => {},  
+  onItemInvalid = () => {},
 }) {
   const initialValues = {
     name: "",
@@ -30,9 +30,7 @@ function ProductCategoryForm({
   }, []);
 
   useEffect(() => {
-    console.log("checkForm");
     if (validate === true) {
-      console.log("Not valid");
       validateForm();
     }
   }, [validate]);
@@ -61,28 +59,9 @@ function ProductCategoryForm({
     setData({ ...data, [e.target.name]: e.target.value });
 
     validateForm();
-
-    // schema
-    //   .validate(data, { abortEarly: false })
-    //   .then((result) => {
-    //     setFormErrors({});
-    //     //onItemValid(true);
-    //   })
-    //   .catch(function (err) {
-    //     if (err && err.inner && err.inner.length > 0) {
-    //       const errors = { ...formErrors };
-    //       err.inner.map((val) => {
-    //         errors[val.path] = val.message;
-    //       });
-    //       setFormErrors(errors);
-    //     }
-    //     //onItemValid(false);
-    //   })
-    //   .finally(() => {});
   };
 
   const validateForm = () => {
-    console.log("validateForm");
     Schemas.productCategoryFormSchema
       .validate(data, { abortEarly: false })
       .then((result) => {
@@ -96,8 +75,6 @@ function ProductCategoryForm({
             err[val.path] = val.message;
             return err[val.path];
           });
-          console.log(errors);
-
           setFormErrors(err);
         }
         onItemValid(false);
@@ -113,7 +90,7 @@ function ProductCategoryForm({
             <CInput
               id="name"
               name="name"
-              value={data.name}
+              value={data.name ? data.name : ""}
               onChange={handleInputChange}
               placeholder="Name"
               required

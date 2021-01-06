@@ -1,13 +1,11 @@
 import React from 'react'
 import { useHistory } from "react-router-dom";
-import {
-  CBadge,
+import {  
   CDropdown,
   CDropdownItem,
   CDropdownMenu,
   CDropdownToggle,
   CImg,
-  CLink,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 

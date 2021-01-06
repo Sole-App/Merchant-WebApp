@@ -21,30 +21,41 @@ export default [
     name: 'Locations',
     to: '/locations',
     icon: 'cil-drop',
+    roles: [
+      "Super Admin",
+      "Admin",      
+    ],
   },
   {
     _tag: 'CSidebarNavItem',
     name: 'Products',
     to: '/products',
     icon: 'cil-drop',
+    roles: [
+      "Super Admin",
+      "Admin",      
+    ],
   },
   {
     _tag: 'CSidebarNavItem',
     name: 'Product Category',
     to: '/productcategories',
     icon: 'cil-drop',
+    roles: [
+      "Super Admin",
+      "Admin",      
+    ],
   },
   {
     _tag: 'CSidebarNavItem',
     name: 'Menu',
     to: '/menus',
     icon: 'cil-drop',
-  },
-  // {
-  //   _tag: 'CSidebarNavTitle',
-  //   _children: ['Theme']
-  // },
-  // {
+    roles: [
+      "Super Admin",
+      "Admin",      
+    ],
+  },  
   //   _tag: 'CSidebarNavItem',
   //   name: 'Colors',
   //   to: '/theme/colors',

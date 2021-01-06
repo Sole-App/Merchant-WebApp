@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { CRow, CCol, CInput, CTextarea, CFormGroup } from "@coreui/react";
-import * as yup from "yup";
 
 import { ErrorMessage } from "../../commons";
 import { Schemas } from "../../../validations";

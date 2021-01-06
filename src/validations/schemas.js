@@ -14,7 +14,12 @@ const productCategoryFormSchema = yup.object().shape({
     category: yup.string().optional(),
 });
 
+const openingHoursFormSchema = yup.object().shape({
+
+});
+
 export default {
     locationBasicFormSchema,
     productCategoryFormSchema,
+    openingHoursFormSchema,
 }

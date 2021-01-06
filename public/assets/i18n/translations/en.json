@@ -1,3 +1,9 @@
 {
-    "SAVE": "Save"
+  "SAVE": "Save",
+  "SUBMIT": "Submit",
+  "DELETE": "Delete",
+  "CANCEL": "Cancel",
+
+  "Delete Item": "Delete Item",
+  "Are you sure you want to delete?": "Are you sure you want to delete {{text}}?"
 }

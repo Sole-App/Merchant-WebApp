@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, useLocation, useParams, } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import {
   CCard,
   CCardBody,
@@ -63,21 +63,21 @@ const LocationEdit = (props) => {
       },
     },
   });
-  
+
   const { id } = useParams();
-  
+
   useEffect(() => {
     getLocations();
   }, []);
 
-  const getLocations = () =>{
+  const getLocations = () => {
     LocationService.Get(id)
-    .then((response) => {
-      setData(response.data);
-      console.log(data);
-    })
-    .catch((err) => {});
-  }
+      .then((response) => {
+        setData(response.data);
+        console.log(data);
+      })
+      .catch((err) => {});
+  };
 
   const [errors, setErrors] = useState([]);
 
@@ -144,78 +144,78 @@ const LocationEdit = (props) => {
   };
 
   return (
- <CRow >
-    <CCol xs={12} sm={12} md={12} lg={12} xl={12} xxl={12} className="p-0">
-      <CRow>
-        <CCol xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-          <ErrorMessage message={errors.forms} />
-        </CCol>
-      </CRow>
-
-      <CForm noValidate>
+    <CRow>
+      <CCol xs={12} sm={12} md={12} lg={12} xl={12} xxl={12} className="p-0">
         <CRow>
-          <CCol xs={12} sm={12} md={6} lg={6} xl={6} xxl={6}>
-            <CCard>
-              <CCardHeader>
-                <div className="font-weight-bold">Details</div>
-              </CCardHeader>
-              <CCardBody>
-                <LocationBasicForm
-                  //item={locationBasicFormData}
-                  onItemValid={handleBasicLocationFormValid}
-                  onItemUpdated={handleBasicLocationFormDataUpdated}
-                />
-              </CCardBody>
-            </CCard>
-          </CCol>
-
-          <CCol xs={12} sm={12} md={6} lg={6} xl={6} xxl={6}>
-            <CCard>
-              <CCardHeader>
-                <div className="font-weight-bold">Opening Hours</div>
-              </CCardHeader>
-              <CCardBody>
-                <OpeningHoursForm
-                  item={data.opening_hours}
-                  onValidForm={handleOpeningHoursFormValid}
-                  onItemUpdated={handleOpeningHoursFormUpdated}
-                />
-              </CCardBody>
-            </CCard>
+          <CCol xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+            <ErrorMessage message={errors.forms} />
           </CCol>
         </CRow>
 
-        <CRow>
-          <CCol xs={12} sm={12} md={6} lg={6} xl={6} xxl={6}>
-            <CCard>
-              <CCardHeader>
-                <div className="font-weight-bold">Address</div>
-              </CCardHeader>
-              <CCardBody>
-                <AddressForm
-                  onItemValid={handleAddressFormValid}
-                  onItemUpdated={handleAddressFormDataUpdated}
-                />
-              </CCardBody>
-            </CCard>
-          </CCol>
-        </CRow>
+        <CForm noValidate>
+          <CRow>
+            <CCol xs={12} sm={12} md={6} lg={6} xl={6} xxl={6}>
+              <CCard>
+                <CCardHeader>
+                  <div className="font-weight-bold">Details</div>
+                </CCardHeader>
+                <CCardBody>
+                  <LocationBasicForm
+                    //item={locationBasicFormData}
+                    onItemValid={handleBasicLocationFormValid}
+                    onItemUpdated={handleBasicLocationFormDataUpdated}
+                  />
+                </CCardBody>
+              </CCard>
+            </CCol>
 
-        <CRow>
-          <CCol xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
-            <CButton block color="primary" onClick={handleSubmit}>
-              Create
-            </CButton>
-          </CCol>
-          <CCol xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
-            <CButton block color="primary">
-              Back
-            </CButton>
-          </CCol>
-        </CRow>
-      </CForm>
- </CCol>
-        </CRow>
+            <CCol xs={12} sm={12} md={6} lg={6} xl={6} xxl={6}>
+              <CCard>
+                <CCardHeader>
+                  <div className="font-weight-bold">Opening Hours</div>
+                </CCardHeader>
+                <CCardBody>
+                  <OpeningHoursForm
+                    item={data.opening_hours}
+                    onValidForm={handleOpeningHoursFormValid}
+                    onItemUpdated={handleOpeningHoursFormUpdated}
+                  />
+                </CCardBody>
+              </CCard>
+            </CCol>
+          </CRow>
+
+          <CRow>
+            <CCol xs={12} sm={12} md={6} lg={6} xl={6} xxl={6}>
+              <CCard>
+                <CCardHeader>
+                  <div className="font-weight-bold">Address</div>
+                </CCardHeader>
+                <CCardBody>
+                  <AddressForm
+                    onItemValid={handleAddressFormValid}
+                    onItemUpdated={handleAddressFormDataUpdated}
+                  />
+                </CCardBody>
+              </CCard>
+            </CCol>
+          </CRow>
+
+          <CRow>
+            <CCol xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
+              <CButton block color="primary" onClick={handleSubmit}>
+                Create
+              </CButton>
+            </CCol>
+            <CCol xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
+              <CButton block color="primary">
+                Back
+              </CButton>
+            </CCol>
+          </CRow>
+        </CForm>
+      </CCol>
+    </CRow>
   );
 };
 

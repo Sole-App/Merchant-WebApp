@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { CRow, CCol } from "@coreui/react";
-import * as yup from "yup";
-
-import { useInputsChanged } from "../../../hooks";
 
 import HourSwitcher from "./hourSwitcher";
 
@@ -47,10 +44,7 @@ function OpeningHoursForm({ item, onItemUpdated, onItemValid }) {
     },
   };
 
-  let schema = yup.object().shape({});
-
-  const [data, setData] = useState(item ? item : initialValues);
-  const [formErrors, setFormErrors] = useState([]);
+  const [data, setData] = useState(item != null ? item : initialValues );
 
   useEffect(() => {
     onItemUpdated(data);
@@ -76,7 +70,7 @@ function OpeningHoursForm({ item, onItemUpdated, onItemValid }) {
   const handleTimeChange = (e) => {
     const name = e.name.toLowerCase();
     const weekday = e.getAttribute("data-weekday");
-
+    
     const newData = data[weekday.toLowerCase()];
     if (name === "opensat") {
       newData.hours[0].opensAt = e.value;

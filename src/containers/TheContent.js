@@ -1,16 +1,12 @@
 import React, { Suspense } from 'react'
-import {
-  Redirect,
-  Route,
-  Switch
-} from 'react-router-dom'
+import { Switch } from 'react-router-dom'
 import { CContainer, CFade } from '@coreui/react'
 
 // routes config
 import routes from '../routes'
 
 import { ProtectedRoute } from '../components/commons'
-  
+
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
