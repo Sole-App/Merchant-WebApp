@@ -100,13 +100,6 @@ const ProductCategoriesListing = () => {
       filter: true,
     },
     {
-      key: "created_at",
-      label: "Created Date",
-      _style: { width: "20%" },
-      sorter: false,
-      filter: false,
-    },
-    {
       key: "edit_button",
       label: "",
       _style: { width: "10%" },
@@ -139,7 +132,7 @@ const ProductCategoriesListing = () => {
                   className="font-weight-bold align-middle"
                 >
                   <div className="font-weight-bold align-middle">
-                    Product Categories
+                    {t("Product Categories")}
                   </div>
                 </CCol>
                 <CCol
@@ -170,7 +163,8 @@ const ProductCategoriesListing = () => {
                 hover
                 sorter
                 itemsPerPage={50}
-                //activePage={page}
+                activePage={page}
+                pagination
                 //clickableRows
                 scopedSlots={{
                   name: (item, index) => {

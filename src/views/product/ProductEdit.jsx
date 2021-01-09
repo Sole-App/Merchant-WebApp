@@ -1,35 +1,41 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import {
   CBadge,
   CCard,
   CCardBody,
   CCardHeader,
   CCol,
-  CDataTable,
   CRow,
-  CPagination,
 } from "@coreui/react";
 
 import { ProductService } from "../../services";
 
 const ProductEdit = () => {
-  const [product, setProduct] = useState([]);
+  const history = useHistory();
+  const { id } = useParams();
 
-   useEffect(() => {
-    ProductService.Get("qweqwewqe").then((response) => {
-      setProduct(response.data);
-    });
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    getProduct();
+    history.push(`/products`);
   }, []);
+
+  const getProduct = () => {
+    ProductService.Get(id)
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((err) => {});
+  };
 
   return (
     <CRow>
       <CCol xl={6}>
         <CCard>
           <CCardHeader>Edit Product</CCardHeader>
-          <CCardBody>      
-            dqwdqwdqwdqwdwqdwq     
-          </CCardBody>
+          <CCardBody>dqwdqwdqwdqwdwqdwq</CCardBody>
         </CCard>
       </CCol>
     </CRow>

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   CCard,
   CCardBody,
@@ -13,44 +14,48 @@ import {
 import { ProductCategoryService } from "../../services";
 
 import { ProductCategoryForm } from "../../components/productCategory";
-import { ErrorMessage } from "../../components/commons";
+import { ErrorMessage, LoadingSpinner } from "../../components/commons";
 
 const ProductCategoryCreate = () => {
-  const initialValues = {
-    name: "",
-    category: undefined,
-  };
-
+  const { t } = useTranslation();
   const history = useHistory();
-  const [data, setData] = useState(initialValues);
+
+  const [loading, setLoading] = useState(false);
+
+  const [data, setData] = useState({});
   const [errors, setErrors] = useState({});
 
-  const [productCategoryFormIsValid, setProductCategoryFormIsValid] = useState(
-    false
-  );
-  const [checkProductCategoryForm, setCheckProductCategoryForm] = useState(
-    false
-  );
+  const productCategoryFormRef = useRef();
 
   const handleProductCategoryFormItemUpdated = (data) => {
-    setData(data);
+    //setData(data);
   };
 
-  const handleProductCategoryFormValid = (valid) => {
-    setProductCategoryFormIsValid(valid);
-  };
-
-  useEffect(() => {}, [checkProductCategoryForm]);
-
-  const handleSubmit = (e) => {
-    if (productCategoryFormIsValid === true) {
-      ProductCategoryService.Create(data).then((response) => {
-        history.push(`/productcategories`);
+  const createProductCategory = () => {
+    setLoading(true);
+    ProductCategoryService.Create(data)
+      .then((response) => {
+        history.push("/productcategories");
+      })
+      .catch((err) => {})
+      .finally(() => {
+        setLoading(false);
       });
-    } else {
-      //setCheckProductCategoryForm(true);
-      setErrors({ ...errors, ["forms"]: "Please check all fields" });
-    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    var result = await productCategoryFormRef?.current
+      ?.isFormValid()
+      .then((res) => {
+        console.log(res.data);
+        setData(res.data);
+        createProductCategory();
+      })
+      .catch((err) => {
+        setErrors({ ...errors, ["forms"]: t("Please check all fields") });
+      });
   };
 
   return (
@@ -76,15 +81,13 @@ const ProductCategoryCreate = () => {
               <CCard>
                 <CCardHeader>
                   <div className="font-weight-bold">
-                    Create Product Category
+                    {t("Create Product Category")}
                   </div>
                 </CCardHeader>
                 <CCardBody>
                   <ProductCategoryForm
-                    data={data}
-                    checkForm={checkProductCategoryForm}
-                    onItemValid={handleProductCategoryFormValid}
-                    onItemUpdated={handleProductCategoryFormItemUpdated}
+                    ref={productCategoryFormRef}
+                    item={data ? data : {}}
                   />
                 </CCardBody>
               </CCard>
@@ -94,16 +97,17 @@ const ProductCategoryCreate = () => {
           <CRow>
             <CCol xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
               <CButton block color="primary" onClick={handleSubmit}>
-                Create
+                {t("Create")}
               </CButton>
             </CCol>
             <CCol xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
               <CButton block color="primary">
-                Back
+                {t("Cancel")}
               </CButton>
             </CCol>
           </CRow>
         </CForm>
+        <LoadingSpinner show={loading} text={t("Loading")} />
       </CCol>
     </CRow>
   );

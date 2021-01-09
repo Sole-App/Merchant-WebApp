@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CRow, CCol } from "@coreui/react";
+import _ from "lodash";
 
 import HourSwitcher from "./hourSwitcher";
 
@@ -44,10 +45,14 @@ function OpeningHoursForm({ item, onItemUpdated, onItemValid }) {
     },
   };
 
-  const [data, setData] = useState(item != null ? item : initialValues );
+  const [data, setData] = useState(initialValues);
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
-    onItemUpdated(data);
+    if (!_.isEmpty(item)) {
+      setData(item);
+    }
   }, [data]);
 
   const handleSwitchChange = (e) => {
@@ -70,7 +75,7 @@ function OpeningHoursForm({ item, onItemUpdated, onItemValid }) {
   const handleTimeChange = (e) => {
     const name = e.name.toLowerCase();
     const weekday = e.getAttribute("data-weekday");
-    
+
     const newData = data[weekday.toLowerCase()];
     if (name === "opensat") {
       newData.hours[0].opensAt = e.value;

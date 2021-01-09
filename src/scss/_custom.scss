@@ -42,6 +42,11 @@
     display: none;
 }
 
+.table th,
+.table td {
+    vertical-align: middle;
+}
+
 //(min-width: 992px)
 //html:not([dir="rtl"]) .c-sidebar.c-sidebar-lg-show:not(.c-sidebar-right).c-sidebar-fixed ~ .c-wrapper, html:not([dir="rtl"]) .c-sidebar.c-sidebar-show:not(.c-sidebar-right).c-sidebar-fixed ~ .c-wrapper
 // margin-left: 15%

@@ -1,13 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import { CRow, CCol, CInput, CTextarea, CFormGroup } from "@coreui/react";
 
 import { ErrorMessage } from "../../commons";
 import { Schemas } from "../../../validations";
 import { UseValidateFormData } from "../../../hooks";
+import _ from "lodash";
 
 import "./style.css";
+import { validate } from "email-validator";
 
-function LocationBasicForm({ item, onItemUpdated, onItemValid }) {
+const LocationBasicForm = forwardRef(({ item, onItemUpdated }, ref) => {
   const initialValues = {
     name: "",
     description: "",
@@ -17,63 +24,67 @@ function LocationBasicForm({ item, onItemUpdated, onItemValid }) {
     longitude: "",
   };
 
-  // let schema = yup.object().shape({
-  //   name: yup.string().required().label("Name"),
-  //   description: yup.string().optional(),
-  //   email: yup.string().email().optional(),
-  //   phone_number: yup.string().optional(),
-  //   latitude: yup.string().optional(),
-  //   longitude: yup.string().optional(),
-  // });
-
-  const [data, setData] = useState(item ? item : initialValues);
+  const [data, setData] = useState(initialValues);
   const [formErrors, setFormErrors] = useState([]);
 
+  useImperativeHandle(ref, () => ({
+    isFormValid: async () => {
+      return new Promise((resolve, reject) => {
+        Schemas.locationBasicFormSchema
+          .validate(data, { abortEarly: false })
+          .then((result) => {
+            resolve({
+              valid: true,
+              errors: {},
+            });
+          })
+          .catch((err) => {
+            let errors = {};
+            if (err && err.inner && err.inner.length > 0) {
+              err.inner.map((val) => {
+                errors[val.path] = val.message;
+                return errors[val.path];
+              });
+            }
+            reject({
+              valid: true,
+              errors: {},
+            });
+          })
+          .finally(() => {});
+      });
+    },
+  }));
+
   useEffect(() => {
-    onItemUpdated(data);
-  }, [data, onItemUpdated]);
+    if (!_.isEmpty(item)) {
+      setData(item);
+    }
+  }, [data]);
 
   const handleInputChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
 
-    const { isValid, err } = UseValidateFormData(
-      Schemas.locationBasicFormSchema,
-      data
-    );
+    validateForm();
+  };
 
-    if (isValid) {
-      setFormErrors({});
-      onItemValid(true);
-    } else {
-      if (err && err.inner && err.inner.length > 0) {
-        const errors = { ...formErrors };
-        err.inner.map((val) => {
-          errors[val.path] = val.message;
-          return errors[val.path];
-        });
-        setFormErrors(errors);
-      }
-      onItemValid(false);
-    }
-
-    // Schemas.locationBasicFormSchema
-    //   .validate(data, { abortEarly: false })
-    //   .then((result) => {
-    //     setFormErrors({});
-    //     onItemValid(true);
-    //   })
-    //   .catch(function (err) {
-    //     if (err && err.inner && err.inner.length > 0) {
-    //       const errors = { ...formErrors };
-    //       err.inner.map((val) => {
-    //         errors[val.path] = val.message;
-    //         return errors[val.path];
-    //       });
-    //       setFormErrors(errors);
-    //     }
-    //     onItemValid(false);
-    //   })
-    //   .finally(() => {});
+  const validateForm = () => {
+    Schemas.locationBasicFormSchema
+      .validate(data, { abortEarly: false })
+      .then((result) => {
+        setFormErrors({});
+      })
+      .catch((errors) => {
+        if (errors && errors.inner && errors.inner.length > 0) {
+          const err = { ...formErrors };
+          errors.inner.map((val) => {
+            err[val.path] = val.message;
+            return err[val.path];
+          });
+          setFormErrors(err);
+        }
+      })
+      .finally(() => {});
   };
 
   return (
@@ -84,7 +95,7 @@ function LocationBasicForm({ item, onItemUpdated, onItemValid }) {
             <CInput
               id="name"
               name="name"
-              value={data.name}
+              value={data ? data.name : ""}
               onChange={handleInputChange}
               placeholder="Name *"
               required
@@ -166,6 +177,6 @@ function LocationBasicForm({ item, onItemUpdated, onItemValid }) {
       </CRow>
     </div>
   );
-}
+});
 
 export default LocationBasicForm;

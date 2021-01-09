@@ -9,16 +9,26 @@ import {
   CRow,
   CButton,
 } from "@coreui/react";
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import CIcon from "@coreui/icons-react";
 import { freeSet } from "@coreui/icons";
+import { useTranslation } from "react-i18next";
+import ReactHtmlParser from "react-html-parser";
 
+import { ConfirmationModal, LoadingSpinner } from "../../components/commons";
 import { LocationService } from "../../services";
 
 const LocationsListing = () => {
   const [locations, setLocations] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+
+  const [currentDeleteItem, setCurrentDeleteItem] = useState({});
+
+  const [deletionModalTitle, setDeletionModalTitle] = useState("");
+  const [deletionModalBody, setDeletionModalBody] = useState("");
   const [openDeletionModal, setOpenDeletionModal] = useState(false);
 
+  const { t } = useTranslation();
   const history = useHistory();
 
   useEffect(() => {
@@ -26,56 +36,81 @@ const LocationsListing = () => {
   }, []);
 
   const listItems = async () => {
+    setLoading(true);
     LocationService.List()
       .then((response) => {
         setLocations(response.data);
       })
-      .finally(() => {});
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const redirectToCreatePage = () => {
     history.push(`/location/create`);
   };
 
-  const handleEditItem = (item) => {
+  const handleEditItem = (e, item) => {
+    e.preventDefault();
+
     history.push(`/location/edit/${item.id}`);
   };
 
-  const handleDeleteItem = (item) => {
-    setOpenDeletionModal(true);
+  const handleDeleteConfirm = (e) => {
+    e.preventDefault();
 
-    // LocationService.Delete(item.id)
-    //   .then((response) => {
-    //     listItems();
-    //   })
-    //   .catch((err) => {})
-    //   .finally(() => {});
+    if (currentDeleteItem) {
+      LocationService.Delete(currentDeleteItem.id)
+        .then((response) => {
+          listItems();
+        })
+        .catch((err) => {})
+        .finally(() => {});
+    }
+  };
+
+  const handleDeleteItem = (e, item) => {
+    e.preventDefault();
+
+    setDeletionModalTitle(t("Delete Item"));
+    setDeletionModalBody(
+      ReactHtmlParser(
+        t("Are you sure you want to delete the item?", {
+          text: `<BR /><BR/>${item.name}`,
+        })
+      )
+    );
+
+    setCurrentDeleteItem(item);
+    setOpenDeletionModal(true);
+    setOpenDeletionModal(true);
+  };
+
+  const handleCancelDeletionItem = (e) => {
+    e.preventDefault();
+
+    setDeletionModalTitle("");
+    setDeletionModalBody("");
+    setOpenDeletionModal(false);
   };
 
   const fields = [
     {
       key: "name",
       label: "Name",
-      _style: { width: "40%" },
+      _style: { width: "30%" },
       sorter: true,
       filter: true,
     },
     {
       key: "email",
       label: "Email",
-      _style: { width: "30%" },
+      _style: { width: "40%" },
       sorter: true,
       filter: true,
     },
     {
-      key: "edit_button",
-      label: "",
-      _style: { width: "10%" },
-      sorter: false,
-      filter: false,
-    },
-    {
-      key: "delete_button",
+      key: "actions",
       label: "",
       _style: { width: "10%" },
       sorter: false,
@@ -99,7 +134,9 @@ const LocationsListing = () => {
                   xxl={10}
                   className="font-weight-bold align-middle"
                 >
-                  <div className="font-weight-bold align-middle">Locations</div>
+                  <div className="font-weight-bold align-middle">
+                    {t("Locations")}
+                  </div>
                 </CCol>
                 <CCol
                   xs={2}
@@ -124,7 +161,9 @@ const LocationsListing = () => {
                 //tableFilter
                 hover
                 striped
-                itemsPerPage={20}
+                sorter
+                itemsPerPage={50}
+                pagination
                 scopedSlots={{
                   name: (item, index) => {
                     return (
@@ -137,37 +176,29 @@ const LocationsListing = () => {
                   },
                   email: (item, index) => {
                     if (item && item.email) {
-                      return (
-                        <td>
-                          <a href={``}>{item.email}</a>
-                        </td>
-                      );
+                      return <td>{item.email}</td>;
                     }
 
                     return <td></td>;
                   },
-                  edit_button: (item, index) => {
+                  actions: (item, index) => {
                     return (
                       <td>
-                        <CButton
-                          color="warning"
-                          className="text-white"
-                          onClick={() => handleEditItem(item)}
-                        >
-                          <CIcon content={freeSet.cilPen} />
-                        </CButton>
-                      </td>
-                    );
-                  },
-                  delete_button: (item, index) => {
-                    return (
-                      <td>
-                        <CButton
-                          color="danger"
-                          onClick={() => handleDeleteItem(item)}
-                        >
-                          <CIcon content={freeSet.cilTrash} />
-                        </CButton>
+                        <div className="text-center">
+                          <CButton
+                            color="warning"
+                            className="text-white mr-2"
+                            onClick={(e) => handleEditItem(e, item)}
+                          >
+                            <CIcon content={freeSet.cilPen} />
+                          </CButton>
+                          <CButton
+                            color="danger"
+                            onClick={(e) => handleDeleteItem(e, item)}
+                          >
+                            <CIcon content={freeSet.cilTrash} />
+                          </CButton>
+                        </div>
                       </td>
                     );
                   },
@@ -175,33 +206,19 @@ const LocationsListing = () => {
               />
             </CCardBody>
           </CCard>
+          <ConfirmationModal
+            className=""
+            isOpen={openDeletionModal}
+            title={deletionModalTitle}
+            body={deletionModalBody}
+            submitButtonText={t("Delete")}
+            cancelButtonText={t("Cancel")}
+            onSubmit={handleDeleteConfirm}
+            onCancel={handleCancelDeletionItem}
+          />
         </CCol>
       </CRow>
-
-      <Modal
-        isOpen={openDeletionModal}
-        toggle={this.toggle}
-        className={this.props.className}
-      >
-        <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
-        <ModalBody>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={this.toggle}>
-            Do Something
-          </Button>{" "}
-          <Button color="secondary" onClick={this.toggle}>
-            Cancel
-          </Button>
-        </ModalFooter>
-      </Modal>
+      <LoadingSpinner show={loading} text={t("Loading")} />
     </div>
   );
 };

@@ -14,14 +14,21 @@ import { ProductService } from "../../services";
 import ProductBasicForm from "../../components/product/productBasicForm";
 
 const ProductCreate = () => {
+  const history = useHistory();
+
+  const [data, SetDate] = useState({});
+
+  useEffect(() => {}, []);
+
+  useEffect(() => {}, [data]);
   const handleSubmit = async (inputs) => {
     ProductService.Create(inputs).then((response) => {
-      alert("Product created: " + response.data.id);
+      history.push(`/products`);
     });
   };
 
   return (
-    <CForm noValidate>
+    <CForm>
       <CRow>
         <CCol
           xs={12}

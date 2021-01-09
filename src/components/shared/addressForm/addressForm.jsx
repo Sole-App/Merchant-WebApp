@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-  CRow,
-  CCol,  
-  CInput,  
-  CFormGroup,  
-} from "@coreui/react";
+import { CRow, CCol, CInput, CFormGroup } from "@coreui/react";
 import * as yup from "yup";
-
+import _ from "lodash";
 import { ErrorMessage } from "../../commons";
 
 import "./style.css";
@@ -30,14 +25,16 @@ function AddressForm({ item, onItemUpdated, onItemValid }) {
     //country: yup.string().required().label("Country"),
   });
 
-  const [data, setData] = useState(item ? item : initialValues);
+  const [data, setData] = useState(initialValues);
 
   //const [validate, setValidate] = useState(checkForm);
   const [formErrors, setFormErrors] = useState({});
 
   useEffect(() => {
-    onItemUpdated(data);
-  }, [data])
+    if (!_.isEmpty(item)) {
+      setData(item);
+    }
+  }, [data]);
 
   const handleInputChange = (e) => {
     const newData = { ...data };
@@ -61,8 +58,7 @@ function AddressForm({ item, onItemUpdated, onItemValid }) {
 
         onItemValid(false);
       })
-      .finally(() => {        
-      });
+      .finally(() => {});
   };
 
   return (

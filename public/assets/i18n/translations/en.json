@@ -1,9 +1,24 @@
 {
-  "SAVE": "Save",
-  "SUBMIT": "Submit",
-  "DELETE": "Delete",
-  "CANCEL": "Cancel",
+  "Save": "Save",
+  "Create": "Create",
+  "Edit": "Edit",
+  "Submit": "Submit",
+  "Delete": "Delete",
+  "Remove": "Remove",
+  "Cancel": "Cancel",
 
   "Delete Item": "Delete Item",
-  "Are you sure you want to delete?": "Are you sure you want to delete {{text}}?"
+  "Remove Item": "Remove Item",
+  "Are you sure you want to delete the item?": "Are you sure you want to delete the item?{{text}}",
+
+  "Products": "Products",
+  "Product": "Product",
+  "Product Categories": "Product Categories",
+  "Product Category": "Product Category",
+  "Orders": "Orders",
+  "Order": "Order",
+  "Locations": "Locations",
+  "Location": "Location",
+  "Variants": "Variants",
+  "Variant": "Variant"
 }

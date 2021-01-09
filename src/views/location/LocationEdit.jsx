@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   CCard,
   CCardBody,
@@ -14,133 +15,98 @@ import { LocationService } from "../../services";
 
 import { AddressForm } from "../../components/shared";
 import { LocationBasicForm, OpeningHoursForm } from "../../components/location";
-import { ErrorMessage } from "../../components/commons";
+import { ErrorMessage, LoadingSpinner } from "../../components/commons";
 
 const LocationEdit = (props) => {
-  const [data, setData] = useState({
-    name: "",
-    description: "",
-    email: "",
-    phone_number: "",
-    latitude: "",
-    longitude: "",
-    address: {},
-    opening_hours: {
-      sunday: {
-        weekday: 1,
-        weekday_name: "Sunday",
-        hours: [],
-      },
-      monday: {
-        weekday: 2,
-        weekday_name: "Monday",
-        hours: [],
-      },
-      tuesday: {
-        weekday: 3,
-        weekday_name: "Tuesday",
-        hours: [],
-      },
-      wednesday: {
-        weekday: 4,
-        weekday_name: "Wednesday",
-        hours: [],
-      },
-      thursday: {
-        weekday: 5,
-        weekday_name: "Thursday",
-        hours: [],
-      },
-      friday: {
-        weekday: 6,
-        weekday_name: "Friday",
-        hours: [],
-      },
-      saturday: {
-        weekday: 7,
-        weekday_name: "Saturday",
-        hours: [],
-      },
-    },
-  });
+  const { t } = useTranslation();
+  const history = useHistory();
 
-  const { id } = useParams();
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    getLocations();
-  }, []);
-
-  const getLocations = () => {
-    LocationService.Get(id)
-      .then((response) => {
-        setData(response.data);
-        console.log(data);
-      })
-      .catch((err) => {});
-  };
+  const [data, setData] = useState({});
 
   const [errors, setErrors] = useState([]);
 
-  const [validLocationBasicForm, setValidLocationBasicForm] = useState(false);
-  const [validAddressForm, setValidAddressForm] = useState(false);
-  const [validOpeningHoursForm, setValidOpeningHoursForm] = useState(true);
+  const { id } = useParams();
+  const locationBasicFormRef = useRef();
+
+  useEffect(() => {
+    getLocation();
+  }, []);
+
+  const getLocation = () => {
+    setLoading(true);
+    LocationService.Get(id)
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((err) => {})
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   useEffect(() => {}, [data]);
 
-  const handleBasicLocationFormDataUpdated = (formData) => {
-    let newData = { ...data };
-    const address = formData.address;
-    const opening_hours = formData.opening_hours;
+  // const handleBasicLocationFormDataUpdated = (formData) => {
+  //   let newData = { ...data };
+  //   const address = formData.address;
+  //   const opening_hours = formData.opening_hours;
 
-    newData = formData;
-    newData.address = address;
-    newData.opening_hours = opening_hours;
+  //   newData = formData;
+  //   newData.address = address;
+  //   newData.opening_hours = opening_hours;
 
-    setData(newData);
+  //   setData(newData);
+  // };
+
+  // const handleBasicLocationFormValid = (valid) => {
+  //   setValidLocationBasicForm(valid);
+  // };
+
+  // const handleAddressFormValid = (valid) => {
+  //   setValidAddressForm(valid);
+  // };
+
+  // const handleAddressFormDataUpdated = (formData) => {
+  //   const newData = { ...data };
+  //   newData.address = formData;
+  //   setData(newData);
+  // };
+
+  // const handleOpeningHoursFormValid = (valid) => {
+  //   validOpeningHoursForm(valid);
+  // };
+
+  // const handleOpeningHoursFormUpdated = (formData) => {
+  //   const newData = { ...data };
+  //   newData.opening_hours = formData;
+  //   setData(newData);
+  // };
+
+  const editProduct = () => {
+    setLoading(true);
+    LocationService.Edit(data)
+      .then((response) => {
+        history.push("/locations");
+      })
+      .catch((err) => {})
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
-  const handleBasicLocationFormValid = (valid) => {
-    setValidLocationBasicForm(valid);
-  };
-
-  const handleAddressFormValid = (valid) => {
-    setValidAddressForm(valid);
-  };
-
-  const handleAddressFormDataUpdated = (formData) => {
-    const newData = { ...data };
-    newData.address = formData;
-    setData(newData);
-  };
-
-  const handleOpeningHoursFormValid = (valid) => {
-    validOpeningHoursForm(valid);
-  };
-
-  const handleOpeningHoursFormUpdated = (formData) => {
-    const newData = { ...data };
-    newData.opening_hours = formData;
-    setData(newData);
-  };
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // console.log(validLocationBasicForm);
-    // console.log(validAddressForm);
-    // console.log(validOpeningHoursForm);
-
-    if (validLocationBasicForm && validAddressForm && validOpeningHoursForm) {
-      LocationService.Create(data)
-        .then((response) => {
-          props.history.push("/locations");
-        })
-        .catch((err) => {})
-        .finally(() => {});
-    } else {
-      console.log("Forms are not valid");
-      setErrors({ ...errors, ["forms"]: "Please check all fields" });
-    }
+    var result = await locationBasicFormRef?.current
+      ?.isFormValid()
+      .then((res) => {
+        editProduct();
+      })
+      .catch((err) => {
+        setErrors({ ...errors, ["forms"]: "Please check all fields" });
+      });
   };
 
   return (
@@ -161,9 +127,8 @@ const LocationEdit = (props) => {
                 </CCardHeader>
                 <CCardBody>
                   <LocationBasicForm
-                    //item={locationBasicFormData}
-                    onItemValid={handleBasicLocationFormValid}
-                    onItemUpdated={handleBasicLocationFormDataUpdated}
+                    ref={locationBasicFormRef}
+                    item={data ? data : {}}
                   />
                 </CCardBody>
               </CCard>
@@ -176,9 +141,7 @@ const LocationEdit = (props) => {
                 </CCardHeader>
                 <CCardBody>
                   <OpeningHoursForm
-                    item={data.opening_hours}
-                    onValidForm={handleOpeningHoursFormValid}
-                    onItemUpdated={handleOpeningHoursFormUpdated}
+                    item={data && data.opening_hours ? data.opening_hours : {}}
                   />
                 </CCardBody>
               </CCard>
@@ -193,8 +156,7 @@ const LocationEdit = (props) => {
                 </CCardHeader>
                 <CCardBody>
                   <AddressForm
-                    onItemValid={handleAddressFormValid}
-                    onItemUpdated={handleAddressFormDataUpdated}
+                    item={data && data.address ? data.address : {}}
                   />
                 </CCardBody>
               </CCard>
@@ -204,16 +166,17 @@ const LocationEdit = (props) => {
           <CRow>
             <CCol xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
               <CButton block color="primary" onClick={handleSubmit}>
-                Create
+                {t("Save")}
               </CButton>
             </CCol>
             <CCol xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
               <CButton block color="primary">
-                Back
+                {t("Cancel")}
               </CButton>
             </CCol>
           </CRow>
         </CForm>
+        <LoadingSpinner show={loading} text={t("Loading")} />
       </CCol>
     </CRow>
   );
