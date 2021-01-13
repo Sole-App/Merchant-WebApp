@@ -10,6 +10,7 @@ import {
   CForm,
   CButton,
 } from "@coreui/react";
+import _ from "lodash";
 
 import { ProductCategoryService } from "../../services";
 
@@ -27,9 +28,14 @@ const ProductCategoryCreate = () => {
 
   const productCategoryFormRef = useRef();
 
-  const handleProductCategoryFormItemUpdated = (data) => {
-    //setData(data);
-  };
+  useEffect(() => {}, []);
+
+  useEffect(() => {
+    // if (!_.isEmpty(data)) {
+    //   createProductCategory();
+    // }
+    //console.log(data);
+  }, [data]);
 
   const createProductCategory = () => {
     setLoading(true);
@@ -46,16 +52,21 @@ const ProductCategoryCreate = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    var result = await productCategoryFormRef?.current
+    await productCategoryFormRef?.current
       ?.isFormValid()
       .then((res) => {
-        console.log(res.data);
         setData(res.data);
-        createProductCategory();
+
+        createProductCategory(res.data);
       })
       .catch((err) => {
         setErrors({ ...errors, ["forms"]: t("Please check all fields") });
       });
+  };
+
+  const handleInputChanged = (event) => {
+    const newValue = { ...data, [event.target.name]: event.target.value };
+    setData(newValue);
   };
 
   return (
@@ -87,7 +98,8 @@ const ProductCategoryCreate = () => {
                 <CCardBody>
                   <ProductCategoryForm
                     ref={productCategoryFormRef}
-                    item={data ? data : {}}
+                    data={data}
+                    onInputChanged={handleInputChanged}
                   />
                 </CCardBody>
               </CCard>

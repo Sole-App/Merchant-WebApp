@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   CCard,
   CCardBody,
@@ -9,6 +10,7 @@ import {
   CForm,
   CButton,
 } from "@coreui/react";
+import _ from "lodash";
 
 import { ProductCategoryService } from "../../services";
 
@@ -16,30 +18,21 @@ import { ProductCategoryForm } from "../../components/productCategory";
 import { ErrorMessage } from "../../components/commons";
 
 const ProductCategoryEdit = () => {
-  const initialValues = {
-    id: "",
-    name: "",
-    category: undefined,
-  };
-
   const { id } = useParams();
 
   const history = useHistory();
-  const [data, setData] = useState(initialValues);
+
+  const { t } = useTranslation();
+
+  const [data, setData] = useState({});
   const [errors, setErrors] = useState({});
 
-  const [productCategoryFormIsValid, setProductCategoryFormIsValid] = useState(
-    false
-  );
-  const [checkProductCategoryForm, setCheckProductCategoryForm] = useState(
-    false
-  );
+  const productCategoryFormRef = useRef();
 
   const getProductCategory = () => {
     ProductCategoryService.Get(id)
       .then((response) => {
-        // data.id = response.data.id;
-        // data.name = response.data.name;
+        console.log(response.data);
         setData(response.data);
       })
       .catch((err) => {});
@@ -50,28 +43,32 @@ const ProductCategoryEdit = () => {
   }, []);
 
   useEffect(() => {
-    console.log(data);
+    // if (!_.isEmpty(data)) {
+    //   ProductCategoryService.Edit(data).then((response) => {
+    //     history.push(`/productcategories`);
+    //   });
+    // }
   }, [data]);
 
-  const handleProductCategoryFormItemUpdated = (data) => {
-    setData(data);
-  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  const handleProductCategoryFormValid = (valid) => {
-    setProductCategoryFormIsValid(valid);
-  };
-
-  useEffect(() => {}, [checkProductCategoryForm]);
-
-  const handleSubmit = (e) => {
-    if (productCategoryFormIsValid === true) {
-      ProductCategoryService.Edit(data).then((response) => {
-        history.push(`/productcategories`);
+    await productCategoryFormRef?.current
+      ?.isFormValid()
+      .then((res) => {
+        setData(res.data);
+        ProductCategoryService.Edit(res.data).then((response) => {
+          history.push(`/productcategories`);
+        });
+      })
+      .catch((err) => {
+        setErrors({ ...errors, ["forms"]: t("Please check all fields") });
       });
-    } else {
-      //setCheckProductCategoryForm(true);
-      setErrors({ ...errors, ["forms"]: "Please check all fields" });
-    }
+  };
+
+  const handleInputChanged = (event) => {
+    const newValue = { ...data, [event.target.name]: event.target.value };
+    setData(newValue);
   };
 
   return (
@@ -100,10 +97,9 @@ const ProductCategoryEdit = () => {
                 </CCardHeader>
                 <CCardBody>
                   <ProductCategoryForm
-                    item={data}
-                    checkForm={checkProductCategoryForm}
-                    onItemValid={handleProductCategoryFormValid}
-                    onItemUpdated={handleProductCategoryFormItemUpdated}
+                    ref={productCategoryFormRef}
+                    data={data}
+                    onInputChanged={handleInputChanged}
                   />
                 </CCardBody>
               </CCard>

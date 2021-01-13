@@ -178,7 +178,15 @@ const ProductCategoriesListing = () => {
                   },
                   parent_category: (item, index) => {
                     if (item && item.parent_category) {
-                      return <td>{item.parent_category.name} </td>;
+                      return (
+                        <td>
+                          <Link
+                            to={`/productcategory/edit/${item.parent_category.id}`}
+                          >
+                            {item.parent_category.name}{" "}
+                          </Link>{" "}
+                        </td>
+                      );
                     }
 
                     return <td></td>;

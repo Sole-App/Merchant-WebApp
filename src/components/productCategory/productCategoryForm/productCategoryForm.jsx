@@ -14,25 +14,20 @@ import _ from "lodash";
 import "./style.css";
 
 const ProductCategoryForm = forwardRef(
-  ({ item, onItemUpdated = () => {} }, ref) => {
+  ({ data, onInputChanged = () => {} }, ref) => {
     const initialValues = {
       name: "",
-      category: undefined,
+      parent_category_id: undefined,
     };
 
     const [formErrors, setFormErrors] = useState({});
-    const [data, setData] = useState(initialValues);
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
       getProductCategoryParents();
     }, []);
 
-    useEffect(() => {
-      if (!_.isEmpty(item)) {
-        setData(item);
-      }
-    }, [data, onItemUpdated]);
+    useEffect(() => {}, [data]);
 
     const getProductCategoryParents = () => {
       ProductCategoryService.ListParent().then((response) => {
@@ -53,6 +48,7 @@ const ProductCategoryForm = forwardRef(
     useImperativeHandle(ref, () => ({
       isFormValid: async () => {
         return new Promise((resolve, reject) => {
+          console.log("Val");
           Schemas.productCategoryFormSchema
             .validate(data, { abortEarly: false })
             .then((result) => {
@@ -70,6 +66,9 @@ const ProductCategoryForm = forwardRef(
                   return errors[val.path];
                 });
               }
+              setFormErrors(errors);
+              console.log(errors);
+
               reject({
                 valid: true,
                 data: {},
@@ -81,10 +80,10 @@ const ProductCategoryForm = forwardRef(
       },
     }));
 
-    const handleInputChange = (e) => {
-      setData({ ...data, [e.target.name]: e.target.value });
-
+    const handleInputChange = (event) => {
       validateForm();
+
+      onInputChanged(event);
     };
 
     const validateForm = () => {
@@ -114,7 +113,7 @@ const ProductCategoryForm = forwardRef(
               <CInput
                 id="name"
                 name="name"
-                value={data.name ? data.name : ""}
+                value={data && data.name ? data.name : ""}
                 onChange={handleInputChange}
                 placeholder="Name"
                 required
@@ -129,9 +128,11 @@ const ProductCategoryForm = forwardRef(
             <CFormGroup>
               <CSelect
                 custom
-                name="category"
-                id="category"
-                value={data.category}
+                name="parent_category_id"
+                id="parent_category_id"
+                value={
+                  data && data.parent_category_id ? data.parent_category_id : ""
+                }
                 onChange={handleInputChange}
                 disabled={categories.length <= 0}
               >
