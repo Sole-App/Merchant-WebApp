@@ -33,7 +33,15 @@ const ProductCategoryEdit = () => {
     ProductCategoryService.Get(id)
       .then((response) => {
         console.log(response.data);
-        setData(response.data);
+
+        if (response.data && response.data.parent_category) {
+          setData({
+            ...response.data,
+            parent_category_id: response.data.parent_category.id,
+          });
+        } else {
+          setData(response.data);
+        }
       })
       .catch((err) => {});
   };
@@ -43,6 +51,7 @@ const ProductCategoryEdit = () => {
   }, []);
 
   useEffect(() => {
+    console.log(data);
     // if (!_.isEmpty(data)) {
     //   ProductCategoryService.Edit(data).then((response) => {
     //     history.push(`/productcategories`);
@@ -71,6 +80,12 @@ const ProductCategoryEdit = () => {
     setData(newValue);
   };
 
+  const handleCancel = async (event) => {
+    event.preventDefault();
+
+    history.push("/productcategories");
+  };
+
   return (
     <CRow>
       <CCol xs={12} sm={12} md={12} lg={12} xl={12} xxl={12} className="p-0">
@@ -93,7 +108,9 @@ const ProductCategoryEdit = () => {
             >
               <CCard>
                 <CCardHeader>
-                  <div className="font-weight-bold">Edit Product Category</div>
+                  <div className="font-weight-bold">
+                    {t("Edit Product Category")}
+                  </div>
                 </CCardHeader>
                 <CCardBody>
                   <ProductCategoryForm
@@ -109,12 +126,12 @@ const ProductCategoryEdit = () => {
           <CRow>
             <CCol xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
               <CButton block color="primary" onClick={handleSubmit}>
-                Save
+                {t("Save")}
               </CButton>
             </CCol>
             <CCol xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
-              <CButton block color="primary">
-                Back
+              <CButton block color="primary" onClick={handleCancel}>
+                {t("Cancel")}
               </CButton>
             </CCol>
           </CRow>

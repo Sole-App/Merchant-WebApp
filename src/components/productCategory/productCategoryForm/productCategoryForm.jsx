@@ -27,14 +27,28 @@ const ProductCategoryForm = forwardRef(
       getProductCategoryParents();
     }, []);
 
-    useEffect(() => {}, [data]);
+    useEffect(() => {
+      if (categories) {
+        const newData = categories.filter(function (item) {
+          return item.id !== data.id;
+        });
+        setCategories([]);
+        setCategories([{ id: "", name: "-- Select --" }, ...newData]);
+      }
+    }, [data]);
 
     const getProductCategoryParents = () => {
       ProductCategoryService.ListParent().then((response) => {
         if (response.data) {
-          setCategories([{ id: "", name: "-- Select --" }, ...response.data]);
-        } else {
-          setCategories([]);
+          // if (data) {
+          //   const newData = response.data.filter(function (item) {
+          //     return item.id !== data.id;
+          //   });
+          //   setCategories([{ id: "", name: "-- Select --" }, ...newData]);
+          // }
+
+          //setCategories([{ id: "", name: "-- Select --" }, ...response.data]);
+          setCategories(response.data);
         }
       });
     };
@@ -48,7 +62,6 @@ const ProductCategoryForm = forwardRef(
     useImperativeHandle(ref, () => ({
       isFormValid: async () => {
         return new Promise((resolve, reject) => {
-          console.log("Val");
           Schemas.productCategoryFormSchema
             .validate(data, { abortEarly: false })
             .then((result) => {
@@ -67,8 +80,6 @@ const ProductCategoryForm = forwardRef(
                 });
               }
               setFormErrors(errors);
-              console.log(errors);
-
               reject({
                 valid: true,
                 data: {},
@@ -99,6 +110,7 @@ const ProductCategoryForm = forwardRef(
               err[val.path] = val.message;
               return err[val.path];
             });
+
             setFormErrors(err);
           }
         })

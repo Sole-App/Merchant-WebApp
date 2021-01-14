@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import { CRow, CCol, CInput, CFormGroup } from "@coreui/react";
-import * as yup from "yup";
 import _ from "lodash";
+
+import { Schemas } from "../../../validations";
 import { ErrorMessage } from "../../commons";
 
 import "./style.css";
 
-function AddressForm({ item, onItemUpdated, onItemValid }) {
+const AddressForm = forwardRef(({ data, onInputChanged = () => {} }, ref) => {
   const initialValues = {
     line1: "",
     line2: "",
@@ -16,47 +22,64 @@ function AddressForm({ item, onItemUpdated, onItemValid }) {
     country: "",
   };
 
-  let schema = yup.object().shape({
-    line1: yup.string().required().label("Line 1"),
-    line2: yup.string().optional().label("Line 2"),
-    zipcode: yup.string().required().label("Zipcode"),
-    city: yup.string().required().label("City"),
-    state: yup.string().required().label("State"),
-    //country: yup.string().required().label("Country"),
-  });
-
-  const [data, setData] = useState(initialValues);
-
-  //const [validate, setValidate] = useState(checkForm);
   const [formErrors, setFormErrors] = useState({});
 
-  useEffect(() => {
-    if (!_.isEmpty(item)) {
-      setData(item);
-    }
-  }, [data]);
+  useEffect(() => {}, [data]);
 
-  const handleInputChange = (e) => {
-    const newData = { ...data };
-    newData[e.target.name] = e.target.value;
-    setData(newData);
+  useImperativeHandle(ref, () => ({
+    isFormValid: async () => {
+      return new Promise((resolve, reject) => {
+        Schemas.addressFormSchema
+          .validate(data, { abortEarly: false })
+          .then((result) => {
+            resolve({
+              valid: true,
+              data: data,
+              errors: {},
+            });
+          })
+          .catch((err) => {
+            let errors = {};
+            if (err && err.inner && err.inner.length > 0) {
+              err.inner.map((val) => {
+                errors[val.path] = val.message;
+                return errors[val.path];
+              });
+            }
+            setFormErrors(errors);
+            reject({
+              valid: true,
+              data: {},
+              errors: {},
+            });
+          })
+          .finally(() => {});
+      });
+    },
+  }));
 
-    schema
+  const handleInputChange = (event) => {
+    validateForm();
+
+    onInputChanged(event);
+  };
+
+  const validateForm = () => {
+    Schemas.addressFormSchema
       .validate(data, { abortEarly: false })
       .then((result) => {
         setFormErrors({});
-        onItemValid(true);
       })
-      .catch(function (err) {
-        if (err && err.inner && err.inner.length > 0) {
-          const errors = { ...formErrors };
-          err.inner.map((val) => {
-            errors[val.path] = val.message;
+      .catch((errors) => {
+        if (errors && errors.inner && errors.inner.length > 0) {
+          const err = { ...formErrors };
+          errors.inner.map((val) => {
+            err[val.path] = val.message;
+            return err[val.path];
           });
-          setFormErrors(errors);
-        }
 
-        onItemValid(false);
+          setFormErrors(err);
+        }
       })
       .finally(() => {});
   };
@@ -69,7 +92,7 @@ function AddressForm({ item, onItemUpdated, onItemValid }) {
             <CInput
               id="line1"
               name="line1"
-              value={data.line1}
+              value={data && data.line1 ? data.line1 : ""}
               onChange={handleInputChange}
               placeholder="Line 1 *"
               required
@@ -85,7 +108,7 @@ function AddressForm({ item, onItemUpdated, onItemValid }) {
             <CInput
               id="line2"
               name="line2"
-              value={data.line2}
+              value={data && data.line2 ? data.line2 : ""}
               onChange={handleInputChange}
               placeholder="Line 2"
             />
@@ -100,7 +123,7 @@ function AddressForm({ item, onItemUpdated, onItemValid }) {
             <CInput
               id="zipcode"
               name="zipcode"
-              value={data.zipcode}
+              value={data && data.zipcode ? data.zipcode : ""}
               onChange={handleInputChange}
               placeholder="Zipcode *"
               required
@@ -114,7 +137,7 @@ function AddressForm({ item, onItemUpdated, onItemValid }) {
             <CInput
               id="city"
               name="city"
-              value={data.city}
+              value={data && data.state ? data.city : ""}
               onChange={handleInputChange}
               placeholder="City *"
               required
@@ -128,7 +151,7 @@ function AddressForm({ item, onItemUpdated, onItemValid }) {
             <CInput
               id="state"
               name="state"
-              value={data.state}
+              value={data && data.state ? data.state : ""}
               onChange={handleInputChange}
               placeholder="State *"
               required
@@ -139,6 +162,6 @@ function AddressForm({ item, onItemUpdated, onItemValid }) {
       </CRow>
     </div>
   );
-}
+});
 
 export default AddressForm;

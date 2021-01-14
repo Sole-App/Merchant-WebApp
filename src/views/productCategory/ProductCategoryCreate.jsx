@@ -30,12 +30,7 @@ const ProductCategoryCreate = () => {
 
   useEffect(() => {}, []);
 
-  useEffect(() => {
-    // if (!_.isEmpty(data)) {
-    //   createProductCategory();
-    // }
-    //console.log(data);
-  }, [data]);
+  useEffect(() => {}, [data]);
 
   const createProductCategory = () => {
     setLoading(true);
@@ -57,11 +52,17 @@ const ProductCategoryCreate = () => {
       .then((res) => {
         setData(res.data);
 
-        createProductCategory(res.data);
+        createProductCategory();
       })
       .catch((err) => {
         setErrors({ ...errors, ["forms"]: t("Please check all fields") });
       });
+  };
+
+  const handleCancel = async (event) => {
+    event.preventDefault();
+
+    history.push("/productcategories");
   };
 
   const handleInputChanged = (event) => {
@@ -113,7 +114,7 @@ const ProductCategoryCreate = () => {
               </CButton>
             </CCol>
             <CCol xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
-              <CButton block color="primary">
+              <CButton block color="primary" onClick={handleCancel}>
                 {t("Cancel")}
               </CButton>
             </CCol>

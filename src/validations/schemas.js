@@ -14,6 +14,15 @@ const productCategoryFormSchema = yup.object().shape({
     category: yup.string().optional(),
 });
 
+const addressFormSchema = yup.object().shape({
+    line1: yup.string().required().label("Line 1"),
+    line2: yup.string().optional().label("Line 2"),
+    zipcode: yup.string().required().label("Zipcode"),
+    city: yup.string().required().label("City"),
+    state: yup.string().required().label("State"),
+    //country: yup.string().required().label("Country"),
+});
+
 const openingHoursFormSchema = yup.object().shape({
 
 });
@@ -21,5 +30,6 @@ const openingHoursFormSchema = yup.object().shape({
 export default {
     locationBasicFormSchema,
     productCategoryFormSchema,
+    addressFormSchema,
     openingHoursFormSchema,
 }

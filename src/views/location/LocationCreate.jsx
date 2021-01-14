@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   CCard,
   CCardBody,
@@ -9,15 +10,21 @@ import {
   CForm,
   CButton,
 } from "@coreui/react";
+import _ from "lodash";
 
 import { LocationService } from "../../services";
 
 import { AddressForm } from "../../components/shared";
 import { LocationBasicForm, OpeningHoursForm } from "../../components/location";
-import { ErrorMessage } from "../../components/commons";
+import { ErrorMessage, LoadingSpinner } from "../../components/commons";
 
 const LocationCreate = (props) => {
-  const [data, setData] = useState({
+  const { t } = useTranslation();
+  const history = useHistory();
+
+  const [loading, setLoading] = useState(false);
+
+  const initialValues = {
     name: "",
     description: "",
     email: "",
@@ -62,13 +69,14 @@ const LocationCreate = (props) => {
         hours: [],
       },
     },
-  });
+  };
 
+  const [data, setData] = useState({});
   const [errors, setErrors] = useState([]);
 
-  const [validLocationBasicForm, setValidLocationBasicForm] = useState(false);
-  const [validAddressForm, setValidAddressForm] = useState(false);
-  const [validOpeningHoursForm, setValidOpeningHoursForm] = useState(true);
+  const basicLocationFormRef = useRef();
+  const addressFormRef = useRef();
+  const openingHoursFormRef = useRef();
 
   useEffect(() => {}, [data]);
 
@@ -84,44 +92,52 @@ const LocationCreate = (props) => {
     setData(newData);
   };
 
-  const handleBasicLocationFormValid = (valid) => {
-    setValidLocationBasicForm(valid);
+  const createLocation = () => {
+    setLoading(true);
+
+    LocationService.Create(data)
+      .then((response) => {
+        props.history.push("/locations");
+      })
+      .catch((err) => {})
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
-  const handleAddressFormValid = (valid) => {
-    setValidAddressForm(valid);
-  };
-
-  const handleAddressFormDataUpdated = (formData) => {
-    const newData = { ...data };
-    newData.address = formData;
-    setData(newData);
-  };
-
-  const handleOpeningHoursFormValid = (valid) => {
-    validOpeningHoursForm(valid);
-  };
-
-  const handleOpeningHoursFormUpdated = (formData) => {
-    const newData = { ...data };
-    newData.opening_hours = formData;
-    setData(newData);
-  };
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (validLocationBasicForm && validAddressForm && validOpeningHoursForm) {
-      LocationService.Create(data)
-        .then((response) => {
-          props.history.push("/locations");
-        })
-        .catch((err) => {})
-        .finally(() => {});
-    } else {
-      console.log("Forms are not valid");
-      setErrors({ ...errors, ["forms"]: "Please check all fields" });
-    }
+    Promise.all([
+      basicLocationFormRef?.current?.isFormValid(),
+      addressFormRef?.current?.isFormValid(),
+    ]).then((values) => {
+      console.log(values);
+    });
+  };
+
+  const handleCancel = async (event) => {
+    event.preventDefault();
+
+    history.push("/locations");
+  };
+
+  const handleBasicLocationInputChanged = (event) => {
+    const newValue = { ...data, [event.target.name]: event.target.value };
+    setData(newValue);
+  };
+
+  const handleAddressInputChanged = (event) => {
+    const newValue = {
+      ...data.address,
+      [event.target.name]: event.target.value,
+    };
+    setData(newValue);
+  };
+
+  const handleOpeningHoursInputChanged = (event) => {
+    const newValue = { ...data, [event.target.name]: event.target.value };
+    setData(newValue);
   };
 
   return (
@@ -138,13 +154,13 @@ const LocationCreate = (props) => {
             <CCol xs={12} sm={12} md={6} lg={6} xl={6} xxl={6}>
               <CCard>
                 <CCardHeader>
-                  <div className="font-weight-bold">Details</div>
+                  <div className="font-weight-bold">{t("Details")}</div>
                 </CCardHeader>
                 <CCardBody>
                   <LocationBasicForm
-                    //item={locationBasicFormData}
-                    onItemValid={handleBasicLocationFormValid}
-                    onItemUpdated={handleBasicLocationFormDataUpdated}
+                    ref={basicLocationFormRef}
+                    data={data}
+                    onInputChanged={handleBasicLocationInputChanged}
                   />
                 </CCardBody>
               </CCard>
@@ -153,13 +169,13 @@ const LocationCreate = (props) => {
             <CCol xs={12} sm={12} md={6} lg={6} xl={6} xxl={6}>
               <CCard>
                 <CCardHeader>
-                  <div className="font-weight-bold">Opening Hours</div>
+                  <div className="font-weight-bold">{t("Opening Hours")}</div>
                 </CCardHeader>
                 <CCardBody>
                   <OpeningHoursForm
-                    item={data.opening_hours}
-                    onValidForm={handleOpeningHoursFormValid}
-                    onItemUpdated={handleOpeningHoursFormUpdated}
+                    ref={openingHoursFormRef}
+                    data={data.opening_hours}
+                    onInputChanged={handleOpeningHoursInputChanged}
                   />
                 </CCardBody>
               </CCard>
@@ -170,12 +186,13 @@ const LocationCreate = (props) => {
             <CCol xs={12} sm={12} md={6} lg={6} xl={6} xxl={6}>
               <CCard>
                 <CCardHeader>
-                  <div className="font-weight-bold">Address</div>
+                  <div className="font-weight-bold">{t("Address")}</div>
                 </CCardHeader>
                 <CCardBody>
                   <AddressForm
-                    onItemValid={handleAddressFormValid}
-                    onItemUpdated={handleAddressFormDataUpdated}
+                    ref={addressFormRef}
+                    data={data.address}
+                    onInputChanged={handleAddressInputChanged}
                   />
                 </CCardBody>
               </CCard>
@@ -185,16 +202,17 @@ const LocationCreate = (props) => {
           <CRow>
             <CCol xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
               <CButton block color="primary" onClick={handleSubmit}>
-                Create
+                {t("Create")}
               </CButton>
             </CCol>
             <CCol xs="6" sm="6" md="6" lg="6" xl="6" xxl="6">
-              <CButton block color="primary">
-                Back
+              <CButton block color="primary" onClick={handleCancel}>
+                {t("Cancel")}
               </CButton>
             </CCol>
           </CRow>
         </CForm>
+        <LoadingSpinner show={loading} text={t("Loading")} />
       </CCol>
     </CRow>
   );
